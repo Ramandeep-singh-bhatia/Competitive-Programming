@@ -1,0 +1,63 @@
+Given a string S, check if the letters can be rearranged so that two characters that are adjacent to each other are not the same.
+
+If possible, output any possible result.  If not possible, return the empty string.
+
+Example 1:
+
+Input: S = "aab"
+Output: "aba"
+Example 2:
+
+Input: S = "aaab"
+Output: ""
+Note:
+
+S will consist of lowercase letters and have length in range [1, 500].
+
+*************************************************************************************
+
+class Solution {
+    public String reorganizeString(String S) {
+        // Add the number of occurences of the characters in a map
+        Map<Character, Integer> m = new HashMap<>();
+        
+        for(char c : S.toCharArray()){
+            m.put(c, m.getOrDefault(c,0) +1);
+        }
+        // arrange the characters based on the frequency of character in descending order
+        PriorityQueue<Character> pq = new PriorityQueue<>((n1,n2) -> m.get(n2) - m.get(n1));
+        
+        pq.addAll(m.keySet());
+        
+        StringBuilder sb = new StringBuilder();
+        // Loop through the prioroity queue till we have 1 character left.
+        // we will append the first two most frequent character in string builder
+        // Since we have used 1 time these two characters we will update the count in the map by reducing it 1 time
+        // If the count of those character is still > 0 we add it to the priority queue. If the frequency changes it will automatically update the position of these characters in the queue.
+        // In next iteration it will automatically pick the two most frequent characters.
+        while(pq.size() > 1){
+            char c1 = pq.poll();
+            char c2 = pq.poll();
+            sb.append(c1);
+            sb.append(c2);
+            m.put(c1,m.get(c1) - 1);
+            m.put(c2,m.get(c2) - 1);
+            
+            if(m.get(c1) > 0) pq.add(c1);
+            if(m.get(c2) > 0) pq.add(c2);
+        }
+        
+        // In the end we will check if the last character in the priorityqueue has count more than than 1. 
+        //If yes it means that it cannot be arranged in a way that tow adjacent characters are not the same hence we return empty string. 
+        //If the count is 1 we will append the last chracter to the string builder
+        if(!pq.isEmpty()){
+            char c = pq.poll();
+            if(m.get(c) > 1)
+                return "";
+            else
+                sb.append(c);
+        }
+        
+        return sb.toString();
+    }
+}
