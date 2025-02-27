@@ -1,19 +1,18 @@
 class Solution {
     public int singleNumber(int[] nums) {
-        Map<Integer, Integer> count = new HashMap<>();
+        // 2*(a + b + c) - (a +a + b + b + c)
+        int sum1 = 0;
+        int sum2 = 0;
+        Set<Integer> set = new HashSet<>();
         for(int num: nums){
-            /*if(!count.containsKey(num)){
-                count.put(num, 0);
+            if(!set.contains(num)){
+                sum1 += num;
+                set.add(num);
             }
-            int c = count.get(num);*/
-            count.put(num, count.getOrDefault(num , 0) + 1);
+
+            sum2 += num;
         }
 
-        for(int num: nums){
-            if(count.get(num) == 1)
-                return num;
-        }
-
-        return 0;
+        return 2* sum1 - sum2;
     }
 }
