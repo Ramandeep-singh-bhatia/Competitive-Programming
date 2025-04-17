@@ -15,6 +15,31 @@
         return result;
     }
 }*/
+// Cumulative sum
+class Solution {
+    public int subarraySum(int[] nums, int k) {
+        int n = nums.length;
+        int[] sum = new int[n];
+        int result = 0;
+        sum[0] = nums[0];
+
+        for(int i = 1; i < n; i++){
+            sum[i] = sum[i-1] + nums[i];
+        }
+
+        for(int i = 0; i < n; i++){
+            if(sum[i] == k)
+                result++;
+            for(int j = i; j< n; j++){
+                if(i != j && sum[j] - sum[i] == k) {
+                    result++;
+                }
+            }
+        }
+
+        return result;
+    }
+}
 
 /*
     The key insight here involves prefix sums (cumulative sums) and how they relate to subarray sums.
@@ -43,7 +68,7 @@ Final count = 2, corresponding to subarrays [1,2] and [3].
 The time complexity is O(n) because we're making just one pass through the array, and HashMap operations are O(1) on average.
 */
 
-class Solution {
+/*class Solution {
     public int subarraySum(int[] nums, int k) {
         int count = 0;
         Map<Integer, Integer> map = new HashMap<>();
@@ -58,4 +83,4 @@ class Solution {
         }
         return count;
     }
-}
+}*/
