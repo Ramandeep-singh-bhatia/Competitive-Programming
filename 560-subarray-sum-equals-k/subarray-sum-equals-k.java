@@ -30,8 +30,8 @@ class Solution {
         for(int i = 0; i < n; i++){
             if(sum[i] == k)
                 result++;
-            for(int j = i; j< n; j++){
-                if(i != j && sum[j] - sum[i] == k) {
+            for(int j = i+1; j< n; j++){
+                if(sum[j] - sum[i] == k) {
                     result++;
                 }
             }
