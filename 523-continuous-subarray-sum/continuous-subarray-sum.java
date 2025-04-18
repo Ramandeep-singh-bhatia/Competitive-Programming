@@ -20,7 +20,7 @@
     }
 }*/
 
-class Solution {
+/*class Solution {
     public boolean checkSubarraySum(int[] nums, int k) {
         int n = nums.length;
         int sum = 0;
@@ -39,7 +39,7 @@ class Solution {
 
         return false;
     }
-}
+}*/
 
 /*
 Intuition - 
@@ -57,7 +57,7 @@ As soon as we find another instance of the same remainder, we verify if the curr
 If we do not find the same remainder again return false
 */
 
-/*class Solution {
+class Solution {
     public boolean checkSubarraySum(int[] nums, int k) {
         int sum = 0;
         Map<Integer, Integer> map = new HashMap<>();
@@ -73,4 +73,4 @@ If we do not find the same remainder again return false
         }
         return false;
     }
-}*/
+}
