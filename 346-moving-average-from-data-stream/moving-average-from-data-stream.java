@@ -2,6 +2,9 @@
     Using double ended queue (ArrayDeque)
     Keeps track of the elements in the queue. When the size of the queue exceeds the window size, we discard the earlier element. So we reduce the element from the sum and add the new element. 
     Average will be the sum / either the queue size or the window size, which ever is smaller
+
+    Time - O(M) , M is th enumber of Next method call
+    Space - O(size) - Queue size which is window size
 */
 
 /*class MovingAverage {
@@ -24,7 +27,13 @@
 }*/
 
 /*
-    Using circular queue
+    Using circular queue with array
+    We don't have to delete the first element in the queue everytime a new element is added after we reach window size limit.
+    This automatically replaces the element with the new element
+    tail = count%size gives me the position of the element that has to be replaced with the new one
+
+    Time - O(M) , M is the number of Next method call
+    Space - O(size) - Array size which is window size
 */
 
 class MovingAverage {
