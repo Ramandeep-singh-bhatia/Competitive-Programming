@@ -29,48 +29,13 @@
     }
 }*/
 
+/*
+Quick Select
+Time - O(n) average, O(n^2) worst case if we choose bad pivots
+Space - O(n^2), O(n) for frequency list, Hashmap. Additional O(n) for creating list in every recursion call.
+*/
+
 /*class Solution {
-    public int[] topKFrequent(int[] nums, int k) {
-        int minNum = nums[0], maxNum = nums[0];
-        for (int num : nums) {
-            if(num > maxNum){
-                maxNum = num;
-            } else if(num < minNum){
-                minNum = num;
-            }
-        }
-
-        int[] numAndCnt = new int[maxNum - minNum + 1];
-        for (int num : nums) {
-            numAndCnt[num - minNum]++;
-        }
-
-        List<Integer>[] cntAndNums = new List[nums.length + 1];
-        for (int i = 0; i < numAndCnt.length; i++) {
-            int numCnt = numAndCnt[i];
-            if (cntAndNums[numCnt] == null) {
-                cntAndNums[numCnt] = new ArrayList<>();
-            }
-            cntAndNums[numCnt].add(i + minNum);
-        }
-
-        int[] result = new int[k];
-        for (int i = cntAndNums.length - 1; k > 0; i--) {
-            if (cntAndNums[i] != null) {
-                for (int num : cntAndNums[i]) {
-                    result[--k] = num;
-                    if (k == 0) {
-                        break;
-                    }
-                }
-            }
-        }
-        return result;
-        
-    }
-}*/
-
-class Solution {
     public int[] topKFrequent(int[] nums, int k) {
         Map<Integer, Integer> frequency = new HashMap<>();
         for(int num: nums){
@@ -122,4 +87,122 @@ class Solution {
         return result;
 
     }
+}*/
+
+/*
+    Array Based quick select
+    Time Complexity - O(n), worst O(n^2) if we choose bad pivots and the problem is not divided by half at each step, it becomes just one element less
+    Space complexity - O(n) - to store map and array of uniwueu elemnets
+*/
+
+class Solution {
+    public int[] topKFrequent(int[] nums, int k) {
+        Map<Integer, Integer> frequency = new HashMap<>();
+        for(int num: nums){
+            frequency.put(num, frequency.getOrDefault(num, 0) + 1);
+        }
+
+        List<int[]> freqList = new ArrayList<>();
+        for(int key: frequency.keySet()){
+            freqList.add(new int[]{key, frequency.get(key)});
+        }
+
+        // Use quickselect to find k most frequent elements
+        List<int[]> topK = quickselect(freqList, 0, freqList.size() - 1, k);
+        
+        int[] result = new int[k];
+        for(int i = 0; i < k; i++){
+            result[i] = topK.get(i)[0];
+        }
+        return result;
+    }
+
+    // Returns k most frequent elements
+    private List<int[]> quickselect(List<int[]> freqList, int start, int end, int k) {
+        if (start > end) return new ArrayList<>();
+        
+        int pivotIndex = partition(freqList, start, end);
+        
+        // If pivot is at the kth position
+        if (pivotIndex == k - 1) {
+            return freqList.subList(0, k);
+        } 
+        // If pivot is after k, search in the left part
+        else if (pivotIndex > k - 1) {
+            return quickselect(freqList, start, pivotIndex - 1, k);
+        } 
+        // If pivot is before k, search in the right part
+        else {
+            return quickselect(freqList, pivotIndex + 1, end, k);
+        }
+    }
+    
+    // Partition the array around a pivot and return the pivot index
+    private int partition(List<int[]> freqList, int start, int end) {
+        // Choose random pivot
+        int pivotIndex = start + new Random().nextInt(end - start + 1);
+        int pivotFreq = freqList.get(pivotIndex)[1];
+        
+        // Move pivot to the end
+        swap(freqList, pivotIndex, end);
+        
+        // Move all elements with higher frequency than pivot to the left
+        int i = start;
+        for (int j = start; j < end; j++) {
+            if (freqList.get(j)[1] > pivotFreq) {
+                swap(freqList, i, j);
+                i++;
+            }
+        }
+        
+        // Move pivot back to its final position
+        swap(freqList, i, end);
+        return i;
+    }
+    
+    private void swap(List<int[]> list, int i, int j) {
+        int[] temp = list.get(i);
+        list.set(i, list.get(j));
+        list.set(j, temp);
+    }
 }
+/*class Solution {
+    public int[] topKFrequent(int[] nums, int k) {
+        int minNum = nums[0], maxNum = nums[0];
+        for (int num : nums) {
+            if(num > maxNum){
+                maxNum = num;
+            } else if(num < minNum){
+                minNum = num;
+            }
+        }
+
+        int[] numAndCnt = new int[maxNum - minNum + 1];
+        for (int num : nums) {
+            numAndCnt[num - minNum]++;
+        }
+
+        List<Integer>[] cntAndNums = new List[nums.length + 1];
+        for (int i = 0; i < numAndCnt.length; i++) {
+            int numCnt = numAndCnt[i];
+            if (cntAndNums[numCnt] == null) {
+                cntAndNums[numCnt] = new ArrayList<>();
+            }
+            cntAndNums[numCnt].add(i + minNum);
+        }
+
+        int[] result = new int[k];
+        for (int i = cntAndNums.length - 1; k > 0; i--) {
+            if (cntAndNums[i] != null) {
+                for (int num : cntAndNums[i]) {
+                    result[--k] = num;
+                    if (k == 0) {
+                        break;
+                    }
+                }
+            }
+        }
+        return result;
+        
+    }
+}*/
