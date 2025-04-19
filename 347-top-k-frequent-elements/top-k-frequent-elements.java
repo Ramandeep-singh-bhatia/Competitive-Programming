@@ -92,10 +92,10 @@ Space - O(n^2), O(n) for frequency list, Hashmap. Additional O(n) for creating l
 /*
     Array Based quick select
     Time Complexity - O(n), worst O(n^2) if we choose bad pivots and the problem is not divided by half at each step, it becomes just one element less
-    Space complexity - O(n) - to store map and array of uniwueu elemnets
+    Space complexity - O(n) - to store map and array of unique elemnets
 */
 
-class Solution {
+/*class Solution {
     public int[] topKFrequent(int[] nums, int k) {
         Map<Integer, Integer> frequency = new HashMap<>();
         for(int num: nums){
@@ -165,8 +165,15 @@ class Solution {
         list.set(i, list.get(j));
         list.set(j, temp);
     }
-}
-/*class Solution {
+}*/
+
+/*
+    Bucket Sort
+    Time complexity - O(n)
+    Space - O(range + n) Range = MaxNum - minNum + 1 for frequency array and n for counts array
+*/
+
+class Solution {
     public int[] topKFrequent(int[] nums, int k) {
         int minNum = nums[0], maxNum = nums[0];
         for (int num : nums) {
@@ -177,24 +184,24 @@ class Solution {
             }
         }
 
-        int[] numAndCnt = new int[maxNum - minNum + 1];
+        int[] frequency = new int[maxNum - minNum + 1];
         for (int num : nums) {
-            numAndCnt[num - minNum]++;
+            frequency[num - minNum]++;
         }
 
-        List<Integer>[] cntAndNums = new List[nums.length + 1];
-        for (int i = 0; i < numAndCnt.length; i++) {
-            int numCnt = numAndCnt[i];
-            if (cntAndNums[numCnt] == null) {
-                cntAndNums[numCnt] = new ArrayList<>();
+        List<Integer>[] counts = new List[nums.length + 1];
+        for (int i = 0; i < frequency.length; i++) {
+            int numCnt = frequency[i];
+            if (counts[numCnt] == null) {
+                counts[numCnt] = new ArrayList<>();
             }
-            cntAndNums[numCnt].add(i + minNum);
+            counts[numCnt].add(i + minNum);
         }
 
         int[] result = new int[k];
-        for (int i = cntAndNums.length - 1; k > 0; i--) {
-            if (cntAndNums[i] != null) {
-                for (int num : cntAndNums[i]) {
+        for (int i = counts.length - 1; k > 0; i--) {
+            if (counts[i] != null) {
+                for (int num : counts[i]) {
                     result[--k] = num;
                     if (k == 0) {
                         break;
@@ -205,4 +212,4 @@ class Solution {
         return result;
         
     }
-}*/
+}
