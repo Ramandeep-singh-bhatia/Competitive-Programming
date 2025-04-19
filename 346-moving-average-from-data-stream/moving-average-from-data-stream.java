@@ -4,7 +4,7 @@
     Average will be the sum / either the queue size or the window size, which ever is smaller
 */
 
-class MovingAverage {
+/*class MovingAverage {
     Queue<Integer> q;
     int size, sum = 0, count = 0;
     public MovingAverage(int size) {
@@ -20,6 +20,32 @@ class MovingAverage {
         sum += val - discard;
 
         return (double) sum / Math.min(q.size(), this.size);
+    }
+}*/
+
+/*
+    Using circular queue
+*/
+
+class MovingAverage {
+    int[] queue;
+    int size;
+    int count = 0;
+    int sum = 0;
+    int head = 0;
+    public MovingAverage(int size) {
+        this.queue =  new int[size];
+        this.size = size;
+    }
+
+    public double next(int val) {
+        count++;
+
+        int tail = count % size;
+        sum += val - queue[tail];
+        queue[tail] = val;
+
+        return (double) sum / Math.min(count, size);
     }
 }
 
