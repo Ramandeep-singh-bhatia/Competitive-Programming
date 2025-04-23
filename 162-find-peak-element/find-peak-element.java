@@ -2,16 +2,16 @@
     Linear Scan - Time - O(n)
 */
 
-public class Solution {
+/*public class Solution {
     public int findPeakElement(int[] nums) {
         for (int i = 0; i < nums.length - 1; i++) {
             if (nums[i] > nums[i + 1]) return i;
         }
         return nums.length - 1;
     }
-}
+}*/
 
-/*class Solution {
+class Solution {
     public int findPeakElement(int[] nums) {
         int l = 0, r = nums.length - 1;
         while(l < r) {
@@ -22,7 +22,7 @@ public class Solution {
                 l = mid + 1;
         }
 
-        return l;
+        return r;
         
     }
-}*/
+}
