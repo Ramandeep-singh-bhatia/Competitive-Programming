@@ -76,27 +76,12 @@ class Solution {
             }
         }
 
-        /*TreeNode a = p, b = q;
+        TreeNode a = p, b = q;
         while(a != b){
             a = a == null ? q : parent.get(a);
             b = b == null ? p : parent.get(b);
         }
-        return a;*/
-
-        // Ancestors set() for node p.
-        Set<TreeNode> ancestors = new HashSet<>();
-
-        // Process all ancestors for node p using parent pointers.
-        while (p != null) {
-            ancestors.add(p);
-            p = parent.get(p);
-        }
-
-        // The first ancestor of q which appears in
-        // p's ancestor set() is their lowest common ancestor.
-        while (!ancestors.contains(q))
-            q = parent.get(q);
-        return q;
+        return a;
     }
 
 }
