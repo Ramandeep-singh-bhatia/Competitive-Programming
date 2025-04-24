@@ -46,7 +46,7 @@ If at any point in the traversal, any two of the three flags left, right or mid 
     }
 }*/
 
-class Solution {
+/*class Solution {
 
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
 
@@ -84,4 +84,96 @@ class Solution {
         return a;
     }
 
+}*/
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+    // Edge case
+    if (root == null) return null;
+    
+    // [node, state, pFound, qFound]
+    // state: 0 = new, 1 = processing left, 2 = processing right, 3 = done
+    Deque<Object[]> stack = new ArrayDeque<>();
+    stack.push(new Object[]{root, 0, false, false});
+    
+    TreeNode lca = null;
+    
+    while (!stack.isEmpty() && lca == null) {
+        Object[] current = stack.peek();
+        TreeNode node = (TreeNode)current[0];
+        int state = (int)current[1];
+        boolean pFound = (boolean)current[2];
+        boolean qFound = (boolean)current[3];
+        
+        // Initial node check
+        if (state == 0) {
+            // Check if current node is p or q
+            if (node == p) {
+                pFound = true;
+            }
+            if (node == q) {
+                qFound = true;
+            }
+            current[1] = 1; // Move to processing left child
+            current[2] = pFound;
+            current[3] = qFound;
+            
+            // If both p and q are the same node, we found LCA
+            if (pFound && qFound) {
+                lca = node;
+                break;
+            }
+        }
+        // Process left subtree
+        else if (state == 1) {
+            current[1] = 2; // Move to processing right child
+            
+            // Process left child if it exists
+            if (node.left != null) {
+                stack.push(new Object[]{node.left, 0, false, false});
+                continue;
+            }
+        }
+        // Process right subtree
+        else if (state == 2) {
+            current[1] = 3; // Mark as done
+            
+            // Process right child if it exists
+            if (node.right != null) {
+                stack.push(new Object[]{node.right, 0, false, false});
+                continue;
+            }
+        }
+        // Node and both subtrees processed
+        else {
+            stack.pop();
+            
+            // If we found both p and q in this subtree, this is the LCA
+            if (pFound && qFound && lca == null) {
+                lca = node;
+                break;
+            }
+            
+            // Propagate result to parent
+            if (!stack.isEmpty()) {
+                Object[] parent = stack.peek();
+                boolean parentPFound = (boolean)parent[2];
+                boolean parentQFound = (boolean)parent[3];
+                
+                parentPFound |= pFound; // Update parent's pFound
+                parentQFound |= qFound; // Update parent's qFound
+                
+                parent[2] = parentPFound;
+                parent[3] = parentQFound;
+                
+                // If parent now has both p and q, it's the LCA
+                if (parentPFound && parentQFound && lca == null) {
+                    lca = (TreeNode)parent[0];
+                    break;
+                }
+            }
+        }
+    }
+    
+    return lca;
+    }
 }
