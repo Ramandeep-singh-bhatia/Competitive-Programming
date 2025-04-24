@@ -22,7 +22,7 @@ If the current node itself is one of p or q, we would mark a variable mid as Tru
 If either of the left or the right branch returns True, this means one of the two nodes was found below.
 If at any point in the traversal, any two of the three flags left, right or mid become True, this means we have found the lowest common ancestor for the nodes p and q.
  */
-class Solution {
+/*class Solution {
     TreeNode ans = null;
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
         dfs(root, p ,q);
@@ -44,16 +44,15 @@ class Solution {
         
         return mid || left || right;
     }
-}
+}*/
 
-/*class Solution {
+class Solution {
 
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
 
         // Stack for tree traversal
-        //Deque<TreeNode> stack = new ArrayDeque<>();
-        //Stack<TreeNode> stack = new Stack<>();
-        Queue<TreeNode> qu = new LinkedList<>();
+        Deque<TreeNode> qu = new ArrayDeque<>();
+        //Queue<TreeNode> qu = new LinkedList<>();
 
         // HashMap for parent pointers
         Map<TreeNode, TreeNode> parent = new HashMap<>();
@@ -77,15 +76,15 @@ class Solution {
             }
         }
 
-        TreeNode a = p, b = q;
+        /*TreeNode a = p, b = q;
         while(a != b){
             a = a == null ? q : parent.get(a);
             b = b == null ? p : parent.get(b);
         }
-        return a;
+        return a;*/
 
         // Ancestors set() for node p.
-        /*Set<TreeNode> ancestors = new HashSet<>();
+        Set<TreeNode> ancestors = new HashSet<>();
 
         // Process all ancestors for node p using parent pointers.
         while (p != null) {
@@ -97,7 +96,7 @@ class Solution {
         // p's ancestor set() is their lowest common ancestor.
         while (!ancestors.contains(q))
             q = parent.get(q);
-        return q;*/
-    /*}
+        return q;
+    }
 
-}*/
+}
