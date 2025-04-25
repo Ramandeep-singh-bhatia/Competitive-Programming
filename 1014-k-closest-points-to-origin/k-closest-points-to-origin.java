@@ -81,7 +81,7 @@ class Solution {
     private int partition(int[][] points, int left, int right) {
         int[] pivot = points[left + (right - left) / 2];
         int pivotDist = squaredDistance(pivot);
-        while (left < right) {
+        while (left <= right) {
             // Iterate through the range and swap elements to make sure
             // that all points closer than the pivot are to the left
             if (squaredDistance(points[left]) >= pivotDist) {
@@ -94,10 +94,6 @@ class Solution {
             }
         }
         
-        // Ensure the left pointer is just past the end of
-        // the left range then return it as the new pivotIndex
-        if (squaredDistance(points[left]) < pivotDist)
-            left++;
         return left;
     }
     
