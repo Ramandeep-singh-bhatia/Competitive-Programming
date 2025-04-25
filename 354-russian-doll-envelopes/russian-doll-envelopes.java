@@ -52,7 +52,7 @@ element 3 - 4 - It can attach behind - 0,1,0,2 and max is 3
     Space complexity - O(n)
 */
 
-class Solution {
+/*class Solution {
     public int maxEnvelopes(int[][] envelopes) {
         Arrays.sort(envelopes, (a,b) -> {
             if(a[0] == b[0])
@@ -79,13 +79,13 @@ class Solution {
         }
         return l.size();
     }
-}
+}*/
 
 /*
     Use binary search to reduce the time complexity from O(n^2) to O(nlogn)
 */
 
-/*class Solution {
+class Solution {
     public int maxEnvelopes(int[][] envelopes) {
         Arrays.sort(envelopes, (a,b) -> {
             if(a[0] == b[0])
@@ -126,4 +126,4 @@ class Solution {
         }
         return left; // Since we have to find the number that is just greater than num, we return left because else condition will only be satisfied if num > l.get(mid)
     }
-}*/
+}
