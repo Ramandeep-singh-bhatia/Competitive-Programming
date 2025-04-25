@@ -18,7 +18,7 @@
     Space - O(n)
 */
 
-public class Solution {
+/*public class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
         ArrayList<Integer> nodes = new ArrayList<>();
         ListNode head = new ListNode(0);
@@ -36,7 +36,7 @@ public class Solution {
         }
         return head.next;
     }
-}
+}*/
 
  /*
     Below are two implementation of merge k sorted lists.
@@ -48,11 +48,11 @@ public class Solution {
     We take an interval which is initially 1 meaning that we will compare the list next to each other. As we move to the next iteration we multiply the interval by 2 making it compare the list node at 0, 2 then 3, 5 merge and so on. 
  */
 
-/*class Solution {
+class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
 
         //Merge List Divide and Conquere
-        int len = lists.length;
+        /*int len = lists.length;
         if(len == 0 || lists == null)
             return null;
         int interval = 1;
@@ -62,10 +62,10 @@ public class Solution {
             }
             interval *= 2;
         }
-        return lists[0];
+        return lists[0];*/
 
         // Merge list one by one
-        /*int n = lists.length;
+        int n = lists.length;
         if(n == 0 || lists == null)
             return null;
         ListNode mergedList = lists[0];
@@ -73,8 +73,8 @@ public class Solution {
             mergedList = mergeSortedList(mergedList, lists[i]);
         }
 
-        return mergedList;*/
-    /*}
+        return mergedList;
+    }
 
     private ListNode mergeSortedList(ListNode l1, ListNode l2){
         if(l1 == null)
@@ -103,4 +103,4 @@ public class Solution {
 
         return head.next;
     }
-}*/
+}
