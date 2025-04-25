@@ -6,23 +6,8 @@ Time - O(nlogn)
 Space - O(n)
 */
 
-class Solution {
+/*class Solution {
     public int[][] kClosest(int[][] points, int k) {
-        /*Queue<int[]> maxHeap = new PriorityQueue<>((int[] a, int[] b) -> ((b[0] * b[0] + b[1] * b[1]) - (a[0] * a[0] + a[1] * a[1])));
-
-        for (int[] n : points){
-            maxHeap.add(n);
-            if(maxHeap.size() > k)
-                maxHeap.poll();
-        }
-
-        int[][] result = new int[k][2];
-        int i = 0;
-        while(!maxHeap.isEmpty()){
-            result[i++] = maxHeap.poll();
-        }
-
-        return result;*/
 
         int[] distance  = new int[points.length];
         int j = 0;
@@ -40,6 +25,33 @@ class Solution {
             }
         }
         return result;
+    }
+}*/
+
+/*
+    Max heap implementation
+    Time - O(nlogk)
+    Space - O(k)
+*/
+
+class Solution {
+    public int[][] kClosest(int[][] points, int k) {
+        Queue<int[]> maxHeap = new PriorityQueue<>((int[] a, int[] b) -> ((b[0] * b[0] + b[1] * b[1]) - (a[0] * a[0] + a[1] * a[1])));
+
+        for (int[] n : points){
+            maxHeap.add(n);
+            if(maxHeap.size() > k)
+                maxHeap.poll();
+        }
+
+        int[][] result = new int[k][2];
+        int i = 0;
+        while(!maxHeap.isEmpty()){
+            result[i++] = maxHeap.poll();
+        }
+
+        return result;
+
     }
 }
 
