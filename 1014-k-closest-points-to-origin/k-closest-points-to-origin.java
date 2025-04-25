@@ -59,47 +59,46 @@ class Solution {
     private Random random = new Random();
     
     public int[][] kClosest(int[][] points, int k) {
+        if (points == null || points.length == 0) {
+            return new int[0][0];
+        }
         
-        // Apply quickselect algorithm
-        quickSelect(points, 0, points.length - 1, k);
+        // Apply iterative quickselect algorithm
+        return quickSelect(points, k);
+    }
+    
+    private int[][] quickSelect(int[][] points, int k) {
+        int left = 0;
+        int right = points.length - 1;
+        int pivotIndex = -1;
+        
+        // Iterative quickselect
+        while (pivotIndex != k - 1) {
+            pivotIndex = partition(points, left, right);
+            
+            if (pivotIndex < k - 1) {
+                // If pivot is to the left of k, search in the right part
+                left = pivotIndex + 1;
+            } else if (pivotIndex > k - 1) {
+                // If pivot is to the right of k, search in the left part
+                right = pivotIndex - 1;
+            }
+        }
         
         // Return the first k points
         return Arrays.copyOf(points, k);
     }
     
-    private void quickSelect(int[][] points, int left, int right, int k) {
-        if (left >= right) {
-            return;
-        }
-        
-        // Partition the array around the pivot
-        int pivotIndex = partition(points, left, right);
-        
-        // If partition index is k, we're done
-        if (pivotIndex == k - 1) {
-            return;
-        } 
-        // If k is on the left of pivot, search the left part
-        else if (pivotIndex > k - 1) {
-            quickSelect(points, left, pivotIndex - 1, k);
-        } 
-        // If k is on the right of pivot, search the right part
-        else {
-            quickSelect(points, pivotIndex + 1, right, k);
-        }
-    }
-    
     private int partition(int[][] points, int left, int right) {
-
         // Choose a random pivot
         int pivotIndex = left + random.nextInt(right - left + 1);
-        // Calculate squared distance of pivot point from origin
-        int pivotDist = distanceSquared(points[pivotIndex]);
+        int[] pivot = points[pivotIndex];
+        int pivotDist = distanceSquared(pivot);
         
         // Move pivot to the end
         swap(points, pivotIndex, right);
         
-        // Move all points with distance less than pivot to the left
+        // Two-pointer approach for partitioning
         int storeIndex = left;
         for (int i = left; i < right; i++) {
             if (distanceSquared(points[i]) < pivotDist) {
@@ -115,7 +114,6 @@ class Solution {
     }
     
     private int distanceSquared(int[] point) {
-        // Calculate squared Euclidean distance from origin (0,0)
         return point[0] * point[0] + point[1] * point[1];
     }
     
