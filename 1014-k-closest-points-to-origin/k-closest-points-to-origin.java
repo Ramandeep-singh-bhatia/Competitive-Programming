@@ -56,43 +56,53 @@ Space - O(n)
 }*/
 
 class Solution {
-    public int[][] kClosest(int[][] points, int K) {
-        return quickSelect(points, K);
+    public int[][] kClosest(int[][] points, int k) {
+        return quickSelect(points, k);
     }
-    private int[][] quickSelect(int[][] points, int K) {
-        int i = 0, j = points.length - 1;
-        while(i < j) {
-            int mid = partition(points, i, j);
-            if(mid == K) break;
-            if(mid < K) {
-                i = mid + 1;
+    
+    private int[][] quickSelect(int[][] points, int k) {
+        int left = 0, right = points.length - 1;
+        int pivotIndex = points.length;
+        while (pivotIndex != k) {
+            // Repeatedly partition the array
+            // while narrowing in on the kth element
+            pivotIndex = partition(points, left, right);
+            if (pivotIndex < k) {
+                left = pivotIndex;
             } else {
-                j = mid - 1;
+                right = pivotIndex - 1;
             }
         }
-        return Arrays.copyOf(points, K);
+        
+        // Return the first k elements of the partially sorted array
+        return Arrays.copyOf(points, k);
     }
-    
-    private int partition(int[][] points, int start, int end) {
-        int[] pivot = points[end];
-        int swapIndex = start - 1;
-        for(int i = start; i < end; i++) {
-            if(value(points[i]) < value(pivot)) {
-                swapIndex++;
-                swap(points, swapIndex, i);
+
+    private int partition(int[][] points, int left, int right) {
+        int[] pivot = points[left + (right - left) / 2];
+        int pivotDist = squaredDistance(pivot);
+        while (left < right) {
+            // Iterate through the range and swap elements to make sure
+            // that all points closer than the pivot are to the left
+            if (squaredDistance(points[left]) >= pivotDist) {
+                int[] temp = points[left];
+                points[left] = points[right];
+                points[right] = temp; 
+                right--;
+            } else {
+                left++;
             }
         }
-        swap(points, ++swapIndex, end);
-        return swapIndex;
+        
+        // Ensure the left pointer is just past the end of
+        // the left range then return it as the new pivotIndex
+        if (squaredDistance(points[left]) < pivotDist)
+            left++;
+        return left;
     }
     
-    private int value(int[] a) {
-        return a[0] * a[0] + a[1] * a[1];
-    }
-    
-    private void swap(int[][] points, int i, int j) {
-        int[] temp = points[i];
-        points[i] = points[j];
-        points[j] = temp;
+    private int squaredDistance(int[] point) {
+        // Calculate and return the squared Euclidean distance
+        return point[0] * point[0] + point[1] * point[1];
     }
 }
