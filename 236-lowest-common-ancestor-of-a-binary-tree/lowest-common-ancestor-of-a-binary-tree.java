@@ -85,6 +85,31 @@ If at any point in the traversal, any two of the three flags left, right or mid 
     }
 
 }*/
+
+/*
+    For the given binary tree, if we have to solve this without using parent pointer, we will need to keep few things in mind. 
+    If there was a stack, or we were using a dfs approach, we could have easily navigated to previous node once we are done with the left and right subtree, but here since we will be using an irteratibe approach we will have to keep track of what is processed and what is pending for each node. For each node, the p or q could be the node itself, or it could be in left subtree or right subtree. So for each node, we need to keep track of whether we found p or q. Like I said it could be the node itself, node in left subtree or node in right subtree. So for each node we can have boolean to track whether we have found p or q. 
+    Also we will have to keep track of whether we have processed the left subtree and right subtree of the node, before we complete the node and move to the previous node. So we can keep track of the state which denotes 
+    0 - whether we are getting this node for the first time,
+    1 - whether we are processing the left subtree of the node,
+    2 - whether we are processing the right subtree of the node,
+    3 - whether we have completed the processing of both left and right subtree of the node
+
+    0 - whether we are getting this node for the first time
+        If the node itself is p or q we update the node information. In case we have found both pa nd q for any node, we can say that we have found the lca, If not we can change the state of the node to 1 meaning we have to process the left sub tree of the node. 
+    1 - whether we are processing the left subtree of the node
+        If node.left is not null, we push the node along with its state info, and its boolean infor for p and q found into the stack.  
+        Also we update the current node whose left subtree is being processed to 2 which means that we now have to process the right subtree
+    2 - whether we are processing the left subtree of the node
+        If node.left is not null, we push the node along with its state info, and its boolean infor for p and q found into the stack.
+        Also we update the current node whose right subtree is being processed to 3 which means that we now have processed both left and right subtree
+    3 - Means for the current node, we have processed both left and right subtree. So we pop the node from stack and check if for the current node we have found p and q. If yes and there is no lca, we found our lca. Else, take the peek node from stack, which is the parent of the current node and update the boolean variable representing whether we have found p or q. We can check if the boolean is already true meaning the parent has already found p or q from either itself, or its left or right subtree. If it is true we keep it true, if it is false, we have to check if current node has p or q so we update that to its parent. 
+
+    Why do we need to keep track of the pFound and qFound and pass it on to its parent. It is possible that we have found just p or q  till this node from its left subtree or right subtree or even from the node itself. We pass this information to its parent so that it explore the other subtree or itself and verify if we have found both p and q before returning the lca.
+Time - O(n)
+Space - O(h). Will be O(n) in worst case for skewed trees
+
+*/
 class Solution {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
     // Edge case
@@ -156,17 +181,11 @@ class Solution {
             // Propagate result to parent
             if (!stack.isEmpty()) {
                 Object[] parent = stack.peek();
-                boolean parentPFound = (boolean)parent[2];
-                boolean parentQFound = (boolean)parent[3];
-                
-                parentPFound |= pFound; // Update parent's pFound
-                parentQFound |= qFound; // Update parent's qFound
-                
-                parent[2] = parentPFound;
-                parent[3] = parentQFound;
+                parent[2] = (boolean)parent[2] || pFound;
+                parent[3] = (boolean)parent[3] || qFound;
                 
                 // If parent now has both p and q, it's the LCA
-                if (parentPFound && parentQFound && lca == null) {
+                if ((boolean)parent[2] && (boolean)parent[3] && lca == null) {
                     lca = (TreeNode)parent[0];
                     break;
                 }
