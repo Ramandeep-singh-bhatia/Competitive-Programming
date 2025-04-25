@@ -41,7 +41,7 @@
  /*
     Below are two implementation of merge k sorted lists.
     one is Merge list one by one where we take the list and combine with the next one and keep doing that till it is merged to the last one. This will have a time complexity of O(Nk) where N is the number of nodes in the whole list and k being the list length. 
-    n is the number of nodes in 1 list and with k list the number of nodex would be n*K which on big O notation is mentioned as N i.e. - O(Nk) else O(nk^2)
+    n is the number of nodes in 1 list and with k list the number of nodes would be n*K which on big O notation is mentioned as N i.e. - O(Nk) else O(nk^2)
 
     Second - Merge List divide and conquere - A better approach will be to take two list combine and move the next two. After 1 iteration the number of List in the array is reduced to half hence making it O(Nlogk) - O(n*klogk)
 
@@ -52,7 +52,7 @@ class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
 
         //Merge List Divide and Conquere
-        /*int len = lists.length;
+        int len = lists.length;
         if(len == 0 || lists == null)
             return null;
         int interval = 1;
@@ -62,10 +62,10 @@ class Solution {
             }
             interval *= 2;
         }
-        return lists[0];*/
+        return lists[0];
 
         // Merge list one by one
-        int n = lists.length;
+        /* n = lists.length;
         if(n == 0 || lists == null)
             return null;
         ListNode mergedList = lists[0];
@@ -73,7 +73,7 @@ class Solution {
             mergedList = mergeSortedList(mergedList, lists[i]);
         }
 
-        return mergedList;
+        return mergedList;*/
     }
 
     private ListNode mergeSortedList(ListNode l1, ListNode l2){
