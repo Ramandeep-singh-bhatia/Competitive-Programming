@@ -62,14 +62,13 @@ class Solution {
     
     private int[][] quickSelect(int[][] points, int k) {
         int left = 0, right = points.length - 1;
-        Random random = new Random();
-        while (left < right) {
+        int pivotIndex = points.length;
+        while (pivotIndex != k) {
             // Repeatedly partition the array
             // while narrowing in on the kth element
-            int pivotIndex = left + random.nextInt(right - left + 1);
-            pivotIndex = partition(points, left, right, pivotIndex);
+            pivotIndex = partition(points, left, right);
             if (pivotIndex < k) {
-                left = pivotIndex + 1;
+                left = pivotIndex;
             } else {
                 right = pivotIndex - 1;
             }
@@ -79,48 +78,31 @@ class Solution {
         return Arrays.copyOf(points, k);
     }
 
-    private int partition(int[][] points, int start, int end, int pivotIndex) {
-        int pivotDistance = getDistance(points[pivotIndex]);
-        // Move pivot to end for partitioning
-        swap(points, pivotIndex, end);
-        
-        // Use two pointers for partitioning
-        int left = start;      // Points to elements >= pivot
-        int right = end - 1;   // Points to elements < pivot
-        
-        // Loop until pointers cross
-        while (left <= right) {
-            // Find an element on left side that is >= pivot
-            while (left <= right && getDistance(points[left]) < pivotDistance) {
-                left++;
-            }
-            
-            // Find an element on right side that is < pivot
-            while (left <= right && getDistance(points[right]) >= pivotDistance) {
+    private int partition(int[][] points, int left, int right) {
+        int[] pivot = points[left + (right - left) / 2];
+        int pivotDist = squaredDistance(pivot);
+        while (left < right) {
+            // Iterate through the range and swap elements to make sure
+            // that all points closer than the pivot are to the left
+            if (squaredDistance(points[left]) >= pivotDist) {
+                int[] temp = points[left];
+                points[left] = points[right];
+                points[right] = temp; 
                 right--;
-            }
-            
-            // Swap elements if pointers haven't crossed
-            if (left <= right) {
-                swap(points, left, right);
+            } else {
                 left++;
-                right--;
             }
         }
         
-        // Put pivot back to its final position
-        swap(points, left, end);
+        // Ensure the left pointer is just past the end of
+        // the left range then return it as the new pivotIndex
+        if (squaredDistance(points[left]) < pivotDist)
+            left++;
         return left;
     }
     
-    private int getDistance(int[] point) {
+    private int squaredDistance(int[] point) {
         // Calculate and return the squared Euclidean distance
         return point[0] * point[0] + point[1] * point[1];
-    }
-
-    private void swap(int[][] points, int i, int j) {
-        int[] temp = points[i];
-        points[i] = points[j];
-        points[j] = temp;
     }
 }
