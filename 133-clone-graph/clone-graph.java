@@ -55,7 +55,8 @@ class Node {
     }
 }*/
 
-class Solution {
+// DFS
+/*class Solution {
     private Map<Node, Node> visited = new HashMap<>();
 
     public Node cloneGraph(Node node) {
@@ -81,5 +82,33 @@ class Solution {
             cloneNode.neighbors.add(cloneGraph(neighbor));
         }
         return cloneNode;
+    }
+}*/
+
+/*
+Time - O(V + E) for number of nodes and edges
+Space - O(V) For map that stores each node.
+*/
+
+class Solution {
+    public Node cloneGraph(Node node) {
+        if (node == null) {
+            return null;
+        }
+
+        Node[] arr = new Node[101]; // track visited and point to new nodes
+        Node sol = helper(node, arr);
+        return sol;
+    }
+
+    public Node helper(Node node, Node[] arr) {
+        if (arr[node.val] != null) {
+            return arr[node.val];
+        }
+        arr[node.val] = new Node(node.val); // create new node
+        for (Node n : node.neighbors) {
+            arr[node.val].neighbors.add(helper(n, arr)); // for each neighbor in the og, add cloned version
+        }
+        return arr[node.val];
     }
 }
