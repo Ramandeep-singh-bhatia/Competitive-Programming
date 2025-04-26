@@ -7,7 +7,7 @@
  *     TreeNode(int x) { val = x; }
  * }
  */
-class Solution {
+/*class Solution {
     Map<TreeNode,TreeNode> parents;
     public List<Integer> distanceK(TreeNode root, TreeNode target, int K) {
         //Parents will contain the parents of each node. we will do dfs to find and populate the parents.
@@ -59,5 +59,60 @@ class Solution {
         parents.put(node,parent);
         if(node.left != null) helper(node.left,node);
         if(node.right != null) helper(node.right,node);
+    }
+}*/
+
+class Solution {
+    public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        helper(root, null, graph);
+
+        List<Integer> answer = new ArrayList<>();
+        Set<Integer> visited = new HashSet<>();
+        Queue<int[]> queue = new LinkedList<>();
+
+        // Add the target node to the queue with a distance of 0
+        queue.add(new int[] { target.val, 0 });
+        visited.add(target.val);
+
+        while (!queue.isEmpty()) {
+            int[] cur = queue.poll();
+            int node = cur[0], distance = cur[1];
+
+            // If the current node is at distance k from target,
+            // add it to the answer list and continue to the next node.
+            if (distance == k) {
+                answer.add(node);
+                continue;
+            }
+
+            // Add all unvisited neighbors of the current node to the queue.
+            for (int neighbor : graph.getOrDefault(node, new ArrayList<>())) {
+                if (!visited.contains(neighbor)) {
+                    visited.add(neighbor);
+                    queue.add(new int[] { neighbor, distance + 1 });
+                }
+            }
+        }
+
+        return answer;
+    }
+
+    // Recursively build the undirected graph from the given binary tree.
+    private void helper(TreeNode cur, TreeNode parent, Map<Integer, List<Integer>> graph) {
+        if (cur != null && parent != null) {
+            graph.putIfAbsent(cur.val, new ArrayList<>());
+            graph.putIfAbsent(parent.val, new ArrayList<>());
+            graph.get(cur.val).add(parent.val);
+            graph.get(parent.val).add(cur.val);
+        }
+
+        if (cur != null && cur.left != null) {
+            helper(cur.left, cur, graph);
+        }
+
+        if (cur != null && cur.right != null) {
+            helper(cur.right, cur, graph);
+        }
     }
 }
