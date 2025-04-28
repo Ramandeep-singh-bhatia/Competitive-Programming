@@ -6,32 +6,15 @@ BruteForce
         Space O(1)
 */
 
-/*class Solution {
+class Solution {
     public boolean containsNearbyDuplicate(int[] nums, int k) {
         for (int i = 0; i < nums.length; i++) {
-            int start = Math.max(0, i - k);
-            for (int j = start; j < i; j++) {
+            for (int j = i + 1; j - i <= k && j < nums.length; j++) {
                 if (nums[i] == nums[j]) {
                     return true;
                 }
             }
         }
-        return false;
-    }
-}*/
-
-class Solution {
-    public boolean containsNearbyDuplicate(int[] nums, int k) {
-        for(int i = 0; i < nums.length; i++){
-            for(int j = i+1; j< nums.length; j++){
-                if(nums[i] == nums[j] && j-i <= k)
-                    return true;
-
-                if(j-i > k)
-                    break;
-            }
-        }
-        
         return false;
     }
 }
