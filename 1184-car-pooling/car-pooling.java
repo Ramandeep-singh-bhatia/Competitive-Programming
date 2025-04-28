@@ -1,3 +1,10 @@
+/*
+    The trips length will be between 1 and 1000 and also the range for form and to is also between 0 and 1000 so max value for N (Trips length) will be 1001 and the second loop will also me maximum of 1001.
+    Overall the time complexity will be O(N + 1001). If N is maximum then time complexity will be N else it will be O(1001)
+
+    Space. - O(1001) whis is O(1)
+
+*/
 class Solution {
     public boolean carPooling(int[][] trips, int capacity) {
     int maxLocation = 0;
