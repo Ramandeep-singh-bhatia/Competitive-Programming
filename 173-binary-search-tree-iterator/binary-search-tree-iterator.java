@@ -21,6 +21,9 @@
     For constructor, we add the left nodes to the stack. 
     For next, we can get the topmost node from the stack, chek if there is a right child of the node then go to the extreem left of the node and keep adding it to the stack
     for hasNext, if there are still nodes in the stack, it means we have more nodes that we can traverse using inorder so we return true 
+
+    Time - O(1)
+    Space - O(H) i.e. logN for balanced BST and O(N) for skewed 
  */
 class BSTIterator {
     Stack<TreeNode> s;
