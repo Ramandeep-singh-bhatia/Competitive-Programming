@@ -6,7 +6,7 @@
     Space O(1)
 */
 
-class Solution {
+/*class Solution {
     public boolean validPalindrome(String s) {
        int i = 0; 
        int j = s.length()-1;
@@ -32,6 +32,34 @@ class Solution {
             j--;
         }
 
+        return true;
+    }
+}*/
+
+/*
+Another approach
+*/
+
+class Solution {
+    public boolean validPalindrome(String s) {
+        // Helper function to check if the string is a palindrome
+        return isPalindrome(s, 0, s.length() - 1, false);
+    }
+
+    // isPalindrome helper function checks if a substring can be a palindrome by deleting at most one character
+    private boolean isPalindrome(String s, int left, int right, boolean deleted) {
+        while (left < right) {
+            if (s.charAt(left) != s.charAt(right)) {
+                // If we already deleted a character, we cannot delete another one
+                if (deleted) {
+                    return false;
+                }
+                // Try deleting either the left character or the right character
+                return isPalindrome(s, left + 1, right, true) || isPalindrome(s, left, right - 1, true);
+            }
+            left++;
+            right--;
+        }
         return true;
     }
 }
