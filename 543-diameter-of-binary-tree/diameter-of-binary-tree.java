@@ -19,6 +19,8 @@
     Longest path for a node to the left or right will be the height of the subtree i.e. from the node to the leaf node. 
     For a node at a certain level, the maximum height will be the maximum of either the left or right subtree and when we canculate the height of the parent, it will be 1 + the height of its node. 
     We have to find the node in a tree such that the overall leftHeight + rightHeight sum is maximum. We can do this easily by doing DFS where for each node, we have to traverse till the leaf node, get the maximum height and return back the height which contriutes to the height of its parent and so on.
+    Time O(N)
+    Space O(H). Height could be log N for balanced tree or N for skewed tree
  */
 class Solution {
     int length = 0;
