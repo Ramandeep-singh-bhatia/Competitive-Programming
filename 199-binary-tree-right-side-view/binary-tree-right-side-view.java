@@ -60,7 +60,7 @@
     For level order traverse, we aill have to add all the nodes in same level once before we move to the next level. Hence we will iterate through each node in the queue and add the left and right of those nodes in a loop before we move to next level
  */
 
-class Solution {
+/*class Solution {
     public List<Integer> rightSideView(TreeNode root) {
         List<Integer> result = new ArrayList<>();
 
@@ -90,9 +90,15 @@ class Solution {
 
         return result;
     }
-} 
+}*/
 
-/*public class Solution {
+/*
+    DFS - We first go to the right child of the tree and check if the result size == to depth, we add it to the result. This will make sure that the right most element is the first element we explore for each level.
+    When we depth changes i.e. the dfs explores the new level, we can compare it with the result size. At every level, we only add the first element at that level and since we are doing right view, when we explore the right first, the first element to be explored at each level will be the right most element of the level.
+    Time - O(N)
+    Space - O(H) where H will be the hight of the tree.
+*/
+public class Solution {
     public List<Integer> rightSideView(TreeNode root) {
         List<Integer> result = new ArrayList<Integer>();
         rightView(root, result, 0);
@@ -111,4 +117,4 @@ class Solution {
         rightView(curr.left, result, currDepth + 1);
         
     }
-}*/
+}
