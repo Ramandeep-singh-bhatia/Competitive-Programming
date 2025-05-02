@@ -53,10 +53,10 @@ class Solution {
         char operation = '+';
         for (int i = 0; i < n; i++) {
             char c = s.charAt(i);
-            if (Character.isDigit(c)) {
+            if (c >= '0' && c <= '9') {
                 currentNumber = (currentNumber * 10) + (c - '0');
             }
-            if (!Character.isDigit(c) && !Character.isWhitespace(c) || i == n - 1) {
+            if (c == '+' || c == '-' || c == '*' || c == '/' || i == n - 1) {
                 if (operation == '+' || operation == '-') {
                     result += lastNumber;
                     lastNumber = (operation == '+') ? currentNumber : -currentNumber;
