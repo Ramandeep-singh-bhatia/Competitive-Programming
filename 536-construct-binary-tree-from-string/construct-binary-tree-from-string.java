@@ -19,7 +19,7 @@
     Time. - O(N)
     Space - O(H) because of recursion. For skewed it will be O(N)
  */
-class Solution {
+/*class Solution {
     int index = 0;
     public TreeNode str2tree(String s) {
         int n = s.length();
@@ -53,5 +53,48 @@ class Solution {
         }
 
         return node;
+    }
+}*/
+
+class Solution {
+    public TreeNode str2tree(String s) {
+        if (s == null || s.length() == 0) return null;
+        
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode current = null; // temporary tree node storage
+        int num = 0, sign = 1;
+        
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            
+            if (c == '-') {
+                sign = -1;
+            }
+            else if (c == '(') {
+                TreeNode node = current != null ? current : new TreeNode(sign * num);
+                stack.push(node);
+                num = 0;
+                sign = 1;
+                current = null;
+            }
+            else if (c == ')') {
+                TreeNode node = current != null ? current : new TreeNode(sign * num);
+                TreeNode parent = stack.pop();
+                if (parent.left == null) {
+                    parent.left = node;
+                } else {
+                    parent.right = node;
+                }
+                current = parent;
+                num = 0;
+                sign = 1;
+            }
+            else {
+                num = num * 10;
+                num += c - '0';
+            }
+        }
+        
+        return current == null ? new TreeNode(sign * num) : current;
     }
 }
