@@ -1,3 +1,9 @@
+/*
+    Let N be the length of nums, which represents the number of integers for which we have to check.
+Let M be the average length of the number.
+Time - O(N*M) - N because of for loop and M because of while loop is isEven. After each iteration,we reduce the length by 1.
+*/
+
 class Solution {
 
     public int findNumbers(int[] nums) {
