@@ -30,7 +30,7 @@
 
 */
 
-class Solution {
+/*class Solution {
     public int subarraysDivByK(int[] nums, int k) {
         int n = nums.length;
         Map<Integer, Integer> frequency = new HashMap<>();
@@ -45,6 +45,24 @@ class Solution {
                 result += frequency.get(mod);
 
             frequency.put(mod, frequency.getOrDefault(mod,0)+1);
+        }
+
+        return result;
+    }
+}*/
+
+class Solution {
+    public int subarraysDivByK(int[] nums, int k) {
+        int[] frequency = new int[k];
+        frequency[0] = 1;
+        int result = 0, sum = 0;
+        for(int i = 0; i < nums.length; i++){
+            sum += nums[i];
+            int mod = sum % k;
+            if(mod < 0)
+                mod += k;
+            result += frequency[mod];
+            frequency[mod]++;
         }
 
         return result;
