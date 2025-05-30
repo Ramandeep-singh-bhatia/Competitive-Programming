@@ -32,7 +32,7 @@ As soon as we find another instance of the same remainder, we verify if the curr
 If we do not find the same remainder again return false
 
 Why we need to initialize map with[0:-1]
-    This is for a special case. For every remainder(sum%k), we keep track of the remainder and the index. Lets say we had 5,2,3 : k = 4 and we do not initialize map with 0,-1.
+    This is for a special case. For every remainder(sum%k), we keep track of the remainder and the index. Lets say we had 5,2,3 : k = 5 and we do not initialize map with 0,-1.
     When we get 5,the remainder is 0 and we add in the map 0,0 
     When we get 2, we have sum = 7 and remainder 2, so we add in the map 2,1
     When we get 3, we have sum 10 and remainder 0, we have 0,0 in the map so we calculate i - map.get(0) which is 2 - 0 which is > 1 so we return true which is correct.
