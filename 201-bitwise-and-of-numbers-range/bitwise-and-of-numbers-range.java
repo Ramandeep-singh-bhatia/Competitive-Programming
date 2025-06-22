@@ -9,7 +9,7 @@
     For optimized approach we can loop until we reach a point where bits are common which meand ma dn n becomes same. Until then we right shift both the numbers. Once we find the common bits we have to move that bit backto its original position, so we keep track of the number of position we shift
 */
 
-class Solution {
+/*class Solution {
     public int rangeBitwiseAnd(int left, int right) {
         int position = 0;
         while(left < right){
@@ -18,5 +18,23 @@ class Solution {
             position++;
         }
         return right << position;
+    }
+}*/
+
+/*
+    Another way to do this to keep removing the right most set bit from the right. Once we reach to the common bit , right will be smaller than left so we loop until left < right. In the end we return right
+    left = 5, right = 7
+    5 - 101
+    7 - 111
+
+    when wereach the common bit by removing the right most set bit we get 100 which is smaller than left which is 101.
+*/
+
+class Solution {
+    public int rangeBitwiseAnd(int left, int right) {
+        while(left < right){
+            right = right & (right - 1);
+        }
+        return right;
     }
 }
