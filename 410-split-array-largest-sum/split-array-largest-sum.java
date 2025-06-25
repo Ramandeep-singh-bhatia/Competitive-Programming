@@ -12,7 +12,7 @@
 */
 
 // Top down approach
-class Solution {
+/*class Solution {
     int[][] dp;
     public int splitArray(int[] nums, int k) {
         int n = nums.length;
@@ -49,5 +49,42 @@ class Solution {
                 break;
         }
         return dp[index][k] = minLargestSum;
+    }
+}*/
+// Bottom up Approach
+class Solution {
+    int[][] dp;
+    public int splitArray(int[] nums, int k) {
+        int n = nums.length;
+        int[] prefixSum = new int[n+1];
+        dp = new int[n+1][k+1];
+        
+        prefixSum[0] = 0;
+
+        for(int i = 1; i <= n; i++){
+            prefixSum[i] = prefixSum[i-1] + nums[i-1];
+        }
+
+        for(int j = 1; j <= k; j++){
+            for(int index = 0; index < n; index++){
+                if(j == 1){
+                    dp[index][j] = prefixSum[n] - prefixSum[index];
+                    continue;
+                }
+                int minLargestSum = Integer.MAX_VALUE;
+                for(int i = index; i <= n - j; i++){
+                    int sum = prefixSum[i + 1] - prefixSum[index];
+
+                    int largestSum = Math.max(sum, dp[i + 1][j - 1]);
+
+                    minLargestSum = Math.min(minLargestSum, largestSum);
+
+                    if(sum >= minLargestSum)
+                        break;
+                }
+                dp[index][j] = minLargestSum;
+            }
+        }
+        return dp[0][k];
     }
 }
