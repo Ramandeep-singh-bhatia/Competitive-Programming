@@ -52,7 +52,7 @@
     }
 }*/
 // Bottom up Approach
-class Solution {
+/*class Solution {
     int[][] dp;
     public int splitArray(int[] nums, int k) {
         int n = nums.length;
@@ -86,5 +86,116 @@ class Solution {
             }
         }
         return dp[0][k];
+    }
+}*/
+
+/*
+    Where ever we have to find the maximum of minimum or maximum of minimum we should think of binary search
+    Lets start with the linear search.
+    We have to split the array into k subarrays and find the minimum among the max sum of that split subarrays. If we have 5 elements and we have to divide the array into 2 we have multiple options as follows
+    1  /  2,3,4,5   Sum - 1 / 14    Maximum sum - 14
+    1,2  /  3,4,5   Sum - 3 / 12    Maximum sum - 12
+    1,2,3 /  4,5    Sum - 6 / 9     Maximum sum - 9
+    1,2,3,4  / 5    Sum - 10 / 5    Maximum sum - 10
+
+Minumum among those is 9 so 9 is the answer. If we think of brute force we can start with 1 and say this the maximum subrray sum allowed and try to split the arrays. if we notice we cannot place 2,3,4 or 5 in any split as it exceeds the maximum allowed sum so it does not make sense to take 1. So we start with 2 as maximum and try to split, we again can't have 3,4or 5 in any split. The question has suggested to use all the elemnts and we cannot have emplty suarray so the minimum value we should consider for the maximum sum for the subarray is the maximum value in the srray. In this case it will be 5.
+    When we take 5 as the maximum value allowed, we can split the array as 1,2 / 3 / 4 / 5 which is 4 subarrays but we only need to split into 2 so we can move forward and try with 6 as the maximum sum and try to split it. We keep on doing until we find a maximum sum that splits the array into 2 parts (because k is 2 here).
+    We also will need the maximum value allowed for the loop. It could be the maximum sum of the array which is sum of all the numbers. So we loop from max value in the array uptil the sum. Every tme we split, we check how many subarrays we forma nd then we can return as soon as we find the first sum that splits the array into k or less subarrays which will the minimum sum value.
+
+*/
+// Linear Search
+
+/*class Solution { 
+    public int splitArray(int[] nums, int k) {
+        int min = -1;
+        int sum = 0;
+        int splitNum = 0;
+        for(int num: nums){
+            min = Math.max(min, num);
+            sum += num;
+        }
+
+        for(int arraySum = min; arraySum <= sum; arraySum++){
+            splitNum = getSplitCount(nums, arraySum);
+
+            if(splitNum <= k){
+                return arraySum;
+            } 
+        }
+
+        return -1;
+    }
+
+    private int getSplitCount(int[] nums, int arraySum){
+        int splitNum = 1;
+        int sum = 0;
+        for(int i = 0; i < nums.length; i++){
+            if(sum + nums[i] <= arraySum){
+                sum += nums[i];
+            } else {
+                sum = nums[i];
+                splitNum++;
+            }
+        }
+
+        return splitNum;
+    }
+}*/
+
+/*
+    we are checking for each array sum between min and sum and tryign to find the array sum which will cause k splits. Instead of linear search we can do binary search between mid and sum. Id the split is <= k then we have to move to the left to find split that are closer to k. If the split is greater than k, we have to move right.
+
+    Example - Nums - 1,2,3,4,5 and k = 2
+    the array sum will range from 5 and 15. If array sum is 5, we can split the array into 1,2 / 3 / 4 / 5 which is 4 splits and if we check for 15, we have only 1 split. So for 5 we get maximum splits and for 15 we get minimum splits. So if we take mid of 5 and 15 we get 10 and we can split the array as follows - 1,2,3 / 4,5. This is exact 2 splits so to find the minimum we move to the left to see if there is any other number that gives us 2 splits. we make the right as 9 and find mid of 5 and 9. It would be 7. For 7 we can split array as follows - 1,2,3 / 4 / 5. it is now 3 splits so we have to move right so we make left as 8. In the end we get 9 as the answer.
+
+    Time - if s is the range for binary search which is between mid and sum, the binary search will be log s. We have to call the getSplitCount function which takes O(n) so overall time complexity is O(n* log S)
+    Space - O(1)
+*/
+
+// Binary Search
+
+class Solution { 
+    public int splitArray(int[] nums, int k) {
+        int min = -1;
+        int sum = 0;
+        int splitNum = 0;
+        for(int num: nums){
+            min = Math.max(min, num);
+            sum += num;
+        }
+
+        int result = 0;
+        int left = min;
+        int right = sum;
+
+        while(left <= right){
+            int arraySum = left + (right - left)/2;
+            splitNum = getSplitCount(nums, arraySum);
+
+            if(splitNum <= k){
+                right = arraySum - 1;
+                result = arraySum;
+            } else {
+                left = arraySum + 1;
+            }
+            
+        }
+
+        return result;
+    }
+
+    private int getSplitCount(int[] nums, int arraySum){
+        int splitNum = 1;
+        int sum = 0;
+        for(int i = 0; i < nums.length; i++){
+            if(sum + nums[i] <= arraySum){
+                sum += nums[i];
+            } else {
+                sum = nums[i];
+                splitNum++;
+            }
+        }
+
+        return splitNum;
     }
 }
