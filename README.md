@@ -68,10 +68,4 @@ Whether you're just getting started or preparing for FAANG-level interviews, con
 
 ---
 
-## 📄 License
-
-This project is licensed under the [MIT License](LICENSE).
-
----
-
 Thanks for visiting! Feel free to ⭐ star the repo if you find it helpful — and remember, keep grinding 💪
