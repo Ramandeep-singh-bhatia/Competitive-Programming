@@ -13,7 +13,7 @@ In the above example, the left of ach number represents the subtraction operatio
 Time - O(log^2 n) - Number of unique subproblems: O(log n). Each call to minOperations(n) includes this loop: Work per subproblem: O(log n)
 Space - O(log n)
 */
-
+/*
 class Solution {
     Map<Integer, Integer> dp = new HashMap<>();
     public int minOperations(int n) {
@@ -31,6 +31,28 @@ class Solution {
         }
                             // Subtraction                Addition
         dp.put(n, 1 + Math.min(minOperations(n - val/2), minOperations(val - n)));
+        return dp.get(n);
+    }
+}*/
+
+// Bit Manipulation
+class Solution {
+    Map<Integer, Integer> dp = new HashMap<>();
+    public int minOperations(int n) {
+        if(n == 0 || n == 1){
+            dp.put(n,n);
+            return n;
+        }
+
+        if(dp.containsKey(n))
+            return dp.get(n);
+
+        int val = 1;
+        while(val < n){
+            val <<= 1;
+        }
+                            // Subtraction                Addition
+        dp.put(n, 1 + Math.min(minOperations(n - (val >> 1)), minOperations(val - n)));
         return dp.get(n);
     }
 }
