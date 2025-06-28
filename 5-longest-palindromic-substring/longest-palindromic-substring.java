@@ -42,7 +42,7 @@
     Space - O(n^2)
 */
 
-class Solution {
+/*class Solution {
     boolean[][] dp;
     public String longestPalindrome(String s) {
         int n = s.length();
@@ -76,7 +76,7 @@ class Solution {
 
         return dp[left][right] = false;
     }
-}
+}*/
 
 /*
    Expand from the middle. We loop through each character and expand to eh left and right to find the palindrome. If we there is a palindrome we check if the length is greater than the maxLenght. If it is we update the result. 
@@ -87,7 +87,7 @@ class Solution {
    Space - O(1)
 */
 
-/*class Solution {
+class Solution {
     public String longestPalindrome(String s) {
         int n = s.length();
         int maxLength = Integer.MIN_VALUE;
@@ -119,4 +119,4 @@ class Solution {
 
         return s.substring(left + 1, right);
     }
-}*/
+}
