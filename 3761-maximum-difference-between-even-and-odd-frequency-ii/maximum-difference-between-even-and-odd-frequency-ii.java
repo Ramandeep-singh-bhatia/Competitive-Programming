@@ -42,6 +42,11 @@
     }
 }*/
 
+/*
+    Time - O(5^2 * n)
+    Space - O(1)
+*/
+
 class Solution {
     public int maxDifference(String s, int k) {
         int n = s.length();
