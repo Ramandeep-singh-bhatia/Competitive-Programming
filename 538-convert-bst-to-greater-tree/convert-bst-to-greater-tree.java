@@ -13,7 +13,7 @@
  *     }
  * }
  */
-class Solution {
+/*class Solution {
     int sum = 0;
     public TreeNode convertBST(TreeNode root) {
         if( root == null)
@@ -23,6 +23,36 @@ class Solution {
         root.val = sum;
         convertBST(root.left);
 
+        return root;
+    }
+}*/
+
+class Solution {
+    public TreeNode convertBST(TreeNode root) {
+        int sum = 0;
+        TreeNode node = root;
+        while(node != null) {
+            if(node.right == null){
+                sum += node.val;
+                node.val = sum;
+                node = node.left;
+            } else {
+                TreeNode temp = node.right;
+                while(temp.left != null && temp.left != node){
+                    temp = temp.left;
+                }
+
+                if(temp.left == null){
+                    temp.left = node;
+                    node = node.right;
+                } else {
+                    sum += node.val;
+                    node.val = sum;
+                    temp.left = null;
+                    node = node.left;
+                }
+            }
+        }
         return root;
     }
 }
