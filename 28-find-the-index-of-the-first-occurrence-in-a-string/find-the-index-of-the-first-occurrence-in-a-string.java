@@ -1,4 +1,4 @@
-class Solution {
+/*class Solution {
     public int strStr(String haystack, String needle) {
         int n = needle.length();
         int m = haystack.length();
@@ -6,6 +6,23 @@ class Solution {
             if(needle.equals(haystack.substring(i, i+ n)))
                 return i;
         }
+        return -1;
+    }
+}*/
+
+class Solution {
+    public int strStr(String haystack, String needle) {
+        int k = needle.length();
+        int n = haystack.length();
+        for(int i = 0; i <= n-k; i++){
+            for(int j = 0; j < k; j++){
+                if(haystack.charAt(i + j) != needle.charAt(j))
+                    break;
+                if(j == k-1)
+                    return i;
+            }
+        }
+
         return -1;
     }
 }
