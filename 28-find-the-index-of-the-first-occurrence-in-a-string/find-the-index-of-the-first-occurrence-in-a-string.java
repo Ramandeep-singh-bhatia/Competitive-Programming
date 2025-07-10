@@ -12,13 +12,13 @@
 
 class Solution {
     public int strStr(String haystack, String needle) {
-        int k = needle.length();
-        int n = haystack.length();
-        for(int i = 0; i <= n-k; i++){
-            for(int j = 0; j < k; j++){
+        int n = needle.length();
+        int m = haystack.length();
+        for(int i = 0; i < m - n + 1; i++){
+            for(int j = 0; j < n; j++){
                 if(haystack.charAt(i + j) != needle.charAt(j))
                     break;
-                if(j == k-1)
+                if(j == n-1)
                     return i;
             }
         }
