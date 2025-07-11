@@ -8,8 +8,10 @@ class Solution {
         map.put('X', 10);
         map.put('V', 5);
         map.put('I', 1);
-        int result = 0;
 
+        // left to right
+        /*int result = 0;
+        
         for(int i = 0; i < s.length(); i++){
             int curr = map.get(s.charAt(i));
             int next = 0;
@@ -18,6 +20,20 @@ class Solution {
             if(curr < next){
                 result += next - curr;
                 i++;
+            } else {
+                result += curr;
+            }
+        }*/
+
+        // right to left
+
+        int result = map.get(s.charAt(s.length() - 1));
+        for(int i = s.length() - 2; i >=0; i--){
+            int last = map.get(s.charAt(i+1));
+            int curr = map.get(s.charAt(i));
+
+            if(curr < last){
+                result -= curr;
             } else {
                 result += curr;
             }
