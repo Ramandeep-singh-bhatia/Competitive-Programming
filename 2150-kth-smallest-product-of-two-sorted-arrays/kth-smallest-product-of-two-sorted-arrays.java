@@ -29,7 +29,7 @@
     Space - O(1)
 */
 
-class Solution {
+/*class Solution {
     public long kthSmallestProduct(int[] nums1, int[] nums2, long k) {
         long left = -10000000000L, right = 10000000000L;
         long result = 0;
@@ -83,63 +83,44 @@ class Solution {
         }
         return productCount;
     }
-}
-
-/*class Solution {
-    public long kthSmallestProduct(int[] nums1, int[] nums2, long k) {
-        long left = -1_000_000_0000L; // -1e10
-        long right = 1_000_000_0000L; // 1e10
-        long result = 0;
-
-        while (left <= right) {
-            long midProduct = left + (right - left) / 2;
-            long count = countLessEqual(nums1, nums2, midProduct);
-
-            if (count >= k) {
-                result = midProduct;
-                right = midProduct - 1;
-            } else {
-                left = midProduct + 1;
-            }
-        }
-
-        return result;
-    }
-
-    private long countLessEqual(int[] nums1, int[] nums2, long midProduct) {
-        long count = 0;
-        int n = nums2.length;
-
-        for (int a : nums1) {
-            if (a >= 0) {
-                int l = 0, r = n - 1, pos = -1;
-                while (l <= r) {
-                    int m = l + (r - l) / 2;
-                    long product = 1L * a * nums2[m];
-                    if (product <= midProduct) {
-                        pos = m;
-                        l = m + 1;
-                    } else {
-                        r = m - 1;
-                    }
-                }
-                count += (pos + 1);
-            } else {
-                int l = 0, r = n - 1, pos = n;
-                while (l <= r) {
-                    int m = l + (r - l) / 2;
-                    long product = 1L * a * nums2[m];
-                    if (product <= midProduct) {
-                        pos = m;
-                        r = m - 1;
-                    } else {
-                        l = m + 1;
-                    }
-                }
-                count += (n - pos);
-            }
-        }
-
-        return count;
-    }
 }*/
+
+class Solution {
+
+    int f(int[] nums2, long x1, long v) {
+        int n2 = nums2.length;
+        int left = 0, right = n2 - 1;
+        while (left <= right) {
+            int mid = (left + right) / 2;
+            long prod = (long) nums2[mid] * x1;
+            if ((x1 >= 0 && prod <= v) || (x1 < 0 && prod > v)) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        if (x1 >= 0) {
+            return left;
+        } else {
+            return n2 - left;
+        }
+    }
+
+    public long kthSmallestProduct(int[] nums1, int[] nums2, long k) {
+        int n1 = nums1.length;
+        long left = -10000000000L, right = 10000000000L;
+        while (left <= right) {
+            long mid = (left + right) / 2;
+            long count = 0;
+            for (int i = 0; i < n1; i++) {
+                count += f(nums2, nums1[i], mid);
+            }
+            if (count < k) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return left;
+    }
+}
