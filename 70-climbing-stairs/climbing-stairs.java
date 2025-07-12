@@ -27,7 +27,7 @@
     }
 }*/
 
-class Solution {
+/*class Solution {
     public int climbStairs(int n) {
         if(n == 1)
             return 1;
@@ -40,20 +40,20 @@ class Solution {
 
         return dp[n];
     }
-}
+}*/
 
-/*class Solution {
+class Solution {
     public int climbStairs(int n) {
         //int[] dp = new int[n+1];
+        if(n == 1)
+            return 1;
         int prev = 1;
-        int curr = 1;
-        for(int i = 2; i <= n; i++){
+        int curr = 2;
+        for(int i = 3; i <= n; i++){
             int temp = curr;
             curr = prev + curr;
             prev = temp;
-            
         }
-
         return curr;
     }
-}*/
+}
