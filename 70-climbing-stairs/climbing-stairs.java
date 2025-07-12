@@ -6,7 +6,7 @@
 */
 
 
-/*class Solution {
+class Solution {
     int[] dp;
     public int climbStairs(int n) {
         dp = new int[n+1];
@@ -14,8 +14,10 @@
     }
 
     private int helper(int n){
-        if(n == 1 || n == 0)
+        if(n == 1)
             return 1;
+        if(n == 2)
+            return 2;
 
         if(dp[n] > 0)
             return dp[n];
@@ -23,14 +25,16 @@
 
         return dp[n];
     }
-}*/
+}
 
 /*class Solution {
     public int climbStairs(int n) {
+        if(n == 1)
+            return 1;
         int[] dp = new int[n+1];
-        dp[0] = 1;
         dp[1] = 1;
-        for(int i = 2; i <= n; i++){
+        dp[2] = 1;
+        for(int i = 3; i <= n; i++){
             dp[i] = dp[i-1] + dp[i-2];
         }
 
@@ -38,7 +42,7 @@
     }
 }*/
 
-class Solution {
+/*class Solution {
     public int climbStairs(int n) {
         //int[] dp = new int[n+1];
         int prev = 1;
@@ -52,4 +56,4 @@ class Solution {
 
         return curr;
     }
-}
+}*/
