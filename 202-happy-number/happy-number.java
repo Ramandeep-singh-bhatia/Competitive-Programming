@@ -1,4 +1,4 @@
-class Solution {
+/*class Solution {
     public boolean isHappy(int n) {
         
         Set<Integer> s = new HashSet<>();
@@ -20,9 +20,9 @@ class Solution {
         }
         return ans;
     }
-}
+}*/
 
-/*class Solution {
+class Solution {
     public boolean isHappy(int n) {
         
         int slow = n;
@@ -44,4 +44,4 @@ class Solution {
         }
         return ans;
     }
-}*/
+}
