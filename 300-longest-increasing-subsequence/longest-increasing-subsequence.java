@@ -13,7 +13,7 @@ element 2 - 3 , It can ataach behind - 0, 1 and 0 and the max is 2 for element 1
 element 3 - 4 - It can attach behind - 0,1,0,2 and max is 3
 */
 
-class Solution {
+/*class Solution {
     public int lengthOfLIS(int[] nums) {
         int n = nums.length;
         int[] lis = new int[n];
@@ -30,37 +30,34 @@ class Solution {
 
         return result;
     }
-}
+}*/
 
 /*
     In the above approach we maintain a array with the larget increasing subsequence length till that element. This apporach required us to loop through each element starting from 0 till that eleemnt to find the number of elements which are smaller than the current number and keep track of that in an array. In the end we can return the maximum value from that array. Another approach is to maintain the longest subsequence list If we find a number which is greater than the last number in the list, we can automatically add that number to the list. If not, we loop through the list and find the number which is larger than the current number and replace it with the number. Lest say we have first number as 6 and next we get 1, we know that we have a chance to get some numbers betweene 1 and 6 in the future, so it makes sense to maintain the list with the smaller number in the begning as we need to find the maximum length of incresing subsequence. This will still be O(n^2) but we can imporve on this if we do a binary search as the list we are maintaining will be sorted and we can easily do binary search to find the number that is just larger than the current number so that we cna replace it in the list with the current number.
 */
 
-/*class Solution {
+class Solution {
     public int lengthOfLIS(int[] nums) {
-        ArrayList<Integer> sub = new ArrayList<>();
-        sub.add(nums[0]);
+        ArrayList<Integer> lis = new ArrayList<>();
+        lis.add(nums[0]);
         
         for (int i = 1; i < nums.length; i++) {
-            int num = nums[i];
-            if (num > sub.get(sub.size() - 1)) {
-                sub.add(num);
+            if (nums[i] > lis.get(lis.size() - 1)) {
+                lis.add(nums[i]);
             } else {
                 // Find the first element in sub that is greater than or equal to num
                 int j = 0;
-                while (num > sub.get(j)) {
-                    j += 1;
+                while (nums[i] > lis.get(j)) {
+                    j++;
                 }
-                
-                //sub.set(sub.size() - 1, num);
 
-                sub.set(j, num);
+                lis.set(j, nums[i]);
             }
         }
         
-        return sub.size();
+        return lis.size();
     }
-}*/
+}
 
 /*class Solution {
     public int lengthOfLIS(int[] nums) {
