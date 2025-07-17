@@ -37,7 +37,7 @@ class Solution {
         int flips = 0;
         int n = target.length();
         for(int i = 0; i < n; i++){
-            int curr = flips % 2; // Alternate - flips & 1
+            int curr = flips & 1; // Alternate - flips % 2;
             if(curr != (target.charAt(i) - '0'))
                 flips++;
         }
