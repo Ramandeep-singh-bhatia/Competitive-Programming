@@ -20,33 +20,21 @@ class MyLinkedList {
     }
     
     public int get(int index) {
+        if(index < 0 || index >= size)
+            return -1;
         Node temp = head.next;
-        int count = 0;
-        while(temp != null){
-            if(count == index){
-                return temp.val;
-            }
+        for(int i = 0; i < index; i++){
             temp = temp.next;
-            count++;
         }
-        
-        return -1;
+        return temp.val;
+
     }
     
     public void addAtHead(int val) {
-        /*Node newNode = new Node(val);
-        newNode.next = head.next;
-        head.next = newNode;*/
         addAtIndex(0, val);
     }
     
     public void addAtTail(int val) {
-        /*Node temp = head;
-        while(temp.next != null){
-            temp = temp.next;
-        }
-        Node newNode = new Node(val);
-        temp.next = newNode;*/
         addAtIndex(size, val);
     }
     
@@ -66,20 +54,16 @@ class MyLinkedList {
     }
     
     public void deleteAtIndex(int index) {
-        Node temp = head.next;
+        if(index < 0 || index >= size)
+            return;
         Node prev = head;
-        int count = 0;
-        while(temp != null){
-            if(count == index){
-                prev.next = temp.next;
-                size--;
-                break;
-            }
-
-            prev = temp;
-            temp = temp.next;
-            count++;
+        
+        for(int i = 0; i < index; i++){
+            prev = prev.next;
         }
+
+        prev.next = prev.next.next;
+        size--;
     }
 }
 
