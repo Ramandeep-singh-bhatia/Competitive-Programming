@@ -13,7 +13,9 @@ class Node{
 
 class MyLinkedList {
     Node head;
+    int size;
     public MyLinkedList() {
+        size = 0;
         head = new Node();
     }
     
@@ -32,39 +34,35 @@ class MyLinkedList {
     }
     
     public void addAtHead(int val) {
-        Node newNode = new Node(val);
+        /*Node newNode = new Node(val);
         newNode.next = head.next;
-        head.next = newNode;
+        head.next = newNode;*/
+        addAtIndex(0, val);
     }
     
     public void addAtTail(int val) {
-        Node temp = head;
+        /*Node temp = head;
         while(temp.next != null){
             temp = temp.next;
         }
         Node newNode = new Node(val);
-        temp.next = newNode;
+        temp.next = newNode;*/
+        addAtIndex(size, val);
     }
     
     public void addAtIndex(int index, int val) {
-        int count = 0;
-        Node temp = head.next;
+        if(index < 0 || index > size)
+            return;
         Node prev = head;
         Node newNode = new Node(val);
-        while(temp != null){
-            if(count == index){
-                newNode.next = temp;
-                prev.next = newNode;
-                break;
-            }
-            prev = temp;
-            temp = temp.next;
-            count++;
+        for(int i = 0; i < index; i++){
+            prev = prev.next;
         }
 
-        if(count == index){
-            prev.next = newNode;
-        }
+        newNode.next = prev.next;
+        prev.next = newNode;
+        size++;
+        
     }
     
     public void deleteAtIndex(int index) {
@@ -74,6 +72,7 @@ class MyLinkedList {
         while(temp != null){
             if(count == index){
                 prev.next = temp.next;
+                size--;
                 break;
             }
 
