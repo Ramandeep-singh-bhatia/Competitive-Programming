@@ -1,4 +1,4 @@
-class Solution {
+/*class Solution {
     public List<Integer> findAnagrams(String s, String p) {
         int left = 0, right = 0, sum = 0;
         int[] pcount = new int[26];
@@ -16,6 +16,34 @@ class Solution {
             }
 
             if(Arrays.equals(pcount, scount)){
+                result.add(left);
+            }
+        }
+
+        return result;
+    }
+}*/
+
+class Solution {
+    public List<Integer> findAnagrams(String s, String p) {
+        int left = 0, right = 0;
+        int[] sCount = new int[26];
+        int[] pCount = new int[26];
+        int length = 0;
+        List<Integer> result = new ArrayList<>();
+
+        for(char c: p.toCharArray()){
+            pCount[c - 'a']++;
+        }
+        for(; right < s.length(); right++){
+            length++;
+            sCount[s.charAt(right) - 'a']++;
+            while(length > p.length()){
+                length--;
+                sCount[s.charAt(left) - 'a']--;
+                left++;
+            }
+            if(length == p.length() && Arrays.equals(sCount, pCount)){
                 result.add(left);
             }
         }
