@@ -19,6 +19,13 @@
     }
 }*/
 
+/*
+    In actual algorithm, the result will represent a potential majority element and we will have to reiterate the array to check if the result element is the majority element or not by checking its frequency is > n/2 or not. But in this question it is mentioned that there qill always be a majority element so we can say that whatever is coming in result will definatly be the majority element. That is why there is no check and we return result after intital iteration.
+
+    Time - O(n)
+    Space - O(1)
+*/
+
 class Solution {
     public int majorityElement(int[] nums) {
         int result = nums[0];
@@ -26,7 +33,10 @@ class Solution {
         for(int num : nums){
             if(count == 0)
                 result = num;
-            count += result == num ? 1 : -1;
+            if(result == num)
+                count++;
+            else
+                count--;
         }
 
         return result;
