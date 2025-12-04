@@ -26,7 +26,8 @@
  *     public List<NestedInteger> getList();
  * }
  */
-class Solution {
+ // double pass BFS
+/*class Solution {
     
     public int depthSumInverse(List<NestedInteger> nestedList) {
         int maxDepth = getMaxDepth(nestedList);
@@ -37,7 +38,6 @@ class Solution {
         int depth = 1;
         while(!q.isEmpty()){
             int size = q.size();
-            maxDepth = Math.max(maxDepth, depth);
             for(int i = 0; i < size; i++){
                 List<NestedInteger> nested = q.poll();
                 for(NestedInteger ni : nested){
@@ -73,5 +73,30 @@ class Solution {
             depth++;
         }
         return maxDepth;
+    }
+}*/
+
+class Solution {
+    
+    public int depthSumInverse(List<NestedInteger> nestedList) {
+        int sumTotal = 0;
+        int sumIntegers = 0;
+        Queue<List<NestedInteger>> q = new LinkedList<>();
+        q.add(nestedList);
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0; i < size; i++){
+                List<NestedInteger> nested = q.poll();
+                for(NestedInteger ni : nested){
+                    if(!ni.isInteger()){
+                        q.add(ni.getList());
+                    } else {
+                        sumIntegers += ni.getInteger();
+                    }
+                }
+            }
+            sumTotal += sumIntegers;
+        }
+        return sumTotal;
     }
 }
