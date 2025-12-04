@@ -65,7 +65,7 @@ class Solution {
             for(int i = 0; i < size; i++){
                 List<NestedInteger> nested = q.poll();
                 for(NestedInteger ni : nested){
-                    if(!ni.isInteger() && ni.getList().size() > 0){
+                    if(!ni.isInteger()){
                         q.add(ni.getList());
                     }
                 }
