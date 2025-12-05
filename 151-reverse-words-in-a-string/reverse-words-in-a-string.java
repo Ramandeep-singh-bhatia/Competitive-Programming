@@ -44,7 +44,15 @@ class Solution {
 
         result.offerFirst(word.toString());
 
-        return String.join(" ", result);
+        //return String.join(" ", result);
+
+        // Alternate
+
+        StringBuilder sb = new StringBuilder(result.pollFirst());
+        while (!result.isEmpty()) {
+            sb.append(" ").append(result.pollFirst());
+        }
+        return sb.toString();
 
     }
 }
