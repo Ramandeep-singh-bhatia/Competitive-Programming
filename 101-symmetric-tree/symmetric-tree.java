@@ -13,7 +13,7 @@
  *     }
  * }
  */
-class Solution {
+/*class Solution {
     public boolean isSymmetric(TreeNode root) {
         Queue<TreeNode> q = new LinkedList<>();
         q.add(root.left);
@@ -30,5 +30,19 @@ class Solution {
             q.add(t2.left);
         }
         return true;
+    }
+}*/
+
+class Solution {
+    public boolean isSymmetric(TreeNode root) {
+        return dfs(root.left, root.right);
+    }
+
+    private boolean dfs(TreeNode p, TreeNode q){
+        if(p == null && q == null)
+            return true;
+        if(p == null || q == null)
+            return false;
+        return p.val == q.val && dfs(p.left, q.right) && dfs(p.right, q.left);
     }
 }
