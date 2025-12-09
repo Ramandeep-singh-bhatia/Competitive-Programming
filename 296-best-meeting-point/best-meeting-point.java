@@ -5,7 +5,7 @@ Space - O(m * n)
 Worst case will be when there is 1 at all the rows and columns
 */
 
-class Solution {
+/*class Solution {
     public int minTotalDistance(int[][] grid) {
         List<Integer> rows = new ArrayList<>();
         List<Integer> cols = new ArrayList<>();
@@ -34,5 +34,57 @@ class Solution {
         }
 
         return result;
+    }
+}*/
+
+/*
+    Time - O(m*n)
+    Space - O(m*n)
+*/
+
+class Solution {
+    public int minTotalDistance(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        
+        List<Integer> rows = new ArrayList<>();
+        List<Integer> cols = new ArrayList<>();
+        
+        // Collect row indices - naturally sorted by traversing row-wise
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 1) {
+                    rows.add(i);
+                }
+            }
+        }
+        
+        // Collect column indices - naturally sorted by traversing column-wise
+        for (int j = 0; j < n; j++) {
+            for (int i = 0; i < m; i++) {
+                if (grid[i][j] == 1) {
+                    cols.add(j);
+                }
+            }
+        }
+        
+        // Both lists are now sorted, no need to call Collections.sort()!
+        
+        // Find medians
+        int medianRow = rows.get(rows.size() / 2);
+        int medianCol = cols.get(cols.size() / 2);
+        
+        // Calculate total distance
+        int totalDistance = 0;
+        
+        for (int row : rows) {
+            totalDistance += Math.abs(row - medianRow);
+        }
+        
+        for (int col : cols) {
+            totalDistance += Math.abs(col - medianCol);
+        }
+        
+        return totalDistance;
     }
 }
