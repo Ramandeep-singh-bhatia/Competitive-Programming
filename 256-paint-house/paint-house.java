@@ -34,7 +34,7 @@
 }*/
 
 // Tabulation
-class Solution {
+/*class Solution {
     public int minCost(int[][] costs) {
         int n = costs.length;
 
@@ -57,9 +57,9 @@ class Solution {
 
         return Math.min(dp[n-1][0], Math.min(dp[n-1][1], dp[n-1][2]));
     }
-}
+}*/
 // Space optimized DP
-/*class Solution {
+class Solution {
     public int minCost(int[][] costs) {
         int n = costs.length;
 
@@ -85,4 +85,4 @@ class Solution {
 
         return Math.min(prevR, Math.min(prevB, prevG));
     }
-}*/
+}
