@@ -1,5 +1,5 @@
 //Memoization
-class Solution {
+/*class Solution {
     public int minCost(int[][] costs) {
         int n = costs.length;
         Integer[][] dp = new Integer[n][3];
@@ -31,10 +31,10 @@ class Solution {
         dp[houseNum][prevHouseColor] = result;
         return result;
     }
-}
+}*/
 
 // Tabulation
-/*class Solution {
+class Solution {
     public int minCost(int[][] costs) {
         int n = costs.length;
 
@@ -57,7 +57,7 @@ class Solution {
 
         return Math.min(dp[n-1][0], Math.min(dp[n-1][1], dp[n-1][2]));
     }
-}*/
+}
 // Space optimized DP
 /*class Solution {
     public int minCost(int[][] costs) {
