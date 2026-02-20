@@ -87,7 +87,7 @@
    Space - O(1)
 */
 
-class Solution {
+/*class Solution {
     public String longestPalindrome(String s) {
         int n = s.length();
         int maxLength = Integer.MIN_VALUE;
@@ -118,5 +118,52 @@ class Solution {
         }
 
         return s.substring(left + 1, right);
+    }
+}*/
+class Solution {
+    public String longestPalindrome(String s) {
+        int n = s.length();
+        
+        // track the start and end indices of the best palindrome found
+        // instead of storing the substring itself, to avoid O(n) allocations in the loop
+        int bestStart = 0;
+        int bestEnd = 0;
+        
+        for (int i = 0; i < n; i++) {
+            // expand around i as center for ODD length palindromes (e.g. "aba")
+            int[] odd = expand(s, i, i);
+            if (odd[1] - odd[0] > bestEnd - bestStart) {
+                bestStart = odd[0];
+                bestEnd = odd[1];
+            }
+            
+            // expand around gap between i and i+1 for EVEN length palindromes (e.g. "abba")
+            // only valid if i+1 is within bounds
+            if (i + 1 < n) {
+                int[] even = expand(s, i, i + 1);
+                if (even[1] - even[0] > bestEnd - bestStart) {
+                    bestStart = even[0];
+                    bestEnd = even[1];
+                }
+            }
+        }
+        
+        // extract the best palindrome using the indices we tracked
+        return s.substring(bestStart, bestEnd + 1);
+    }
+
+    private int[] expand(String s, int left, int right) {
+        // for even-length centers, the two starting characters must match
+        // if they don't, there's no palindrome here at all
+    if (s.charAt(left) != s.charAt(right)) {
+        return new int[]{left, left - 1}; // left > right signals no valid palindrome
+    }
+        // keep expanding outward as long as characters match and we're within bounds
+        while (left > 0 && right < s.length() - 1 && s.charAt(left - 1) == s.charAt(right + 1)) {
+            left--;
+            right++;
+        }
+        // return the indices of the longest palindrome found from this center
+        return new int[]{left, right};
     }
 }
