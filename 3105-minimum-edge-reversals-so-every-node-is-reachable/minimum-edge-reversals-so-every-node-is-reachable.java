@@ -13,7 +13,7 @@
     So in short, if we calculate the cost required from 1 node to all the other nodes, we can calculate the cost from all the nodes using depth and the 2nd formula and we don't have to traverse the tree multiple times for each node. 
 */
 
-class Solution {
+/*class Solution {
     int totalCost;
     public int[] minEdgeReversals(int n, int[][] edges) {
         int[] result = new int[n];
@@ -56,6 +56,128 @@ class Solution {
                 totalCost += c;
                 dfs(destination, graph, visited, cost, d + 1, depth);
             }
+        }
+    }
+}*/
+
+/*import java.util.*;
+
+public class Solution {
+    public int[] minEdgeReversals(int n, int[][] edges) {
+        // Map<node, Map<neighbor, cost>>
+        // cost 0 = going with edge direction (no reversal needed)
+        // cost 1 = going against edge direction (reversal needed)
+        Map<Integer, Map<Integer, Integer>> graph = new HashMap<>();
+        
+        for (int i = 0; i < n; i++) {
+            graph.put(i, new HashMap<>());
+        }
+        
+        for (int[] edge : edges) {
+            int u = edge[0], v = edge[1];
+            // traversing u->v is free, already points this way
+            graph.get(u).put(v, 0);
+            // traversing v->u costs 1, need to reverse
+            graph.get(v).put(u, 1);
+        }
+        
+        int[] answer = new int[n];
+        
+        for (int start = 0; start < n; start++) {
+            answer[start] = dfs(start, -1, graph);
+        }
+        
+        return answer;
+    }
+    
+    private int dfs(int node, int parent, Map<Integer, Map<Integer, Integer>> graph) {
+        int totalCost = 0;
+        
+        for (Map.Entry<Integer, Integer> entry : graph.get(node).entrySet()) {
+            int neighbor = entry.getKey();
+            int cost = entry.getValue();
+            
+            // skip parent to avoid going back up the tree
+            if (neighbor == parent) continue;
+            
+            // cost to reach this neighbor + cost to reach everything beyond it
+            totalCost += cost + dfs(neighbor, node, graph);
+        }
+        
+        return totalCost;
+    }
+}*/
+
+import java.util.*;
+
+public class Solution {
+    public int[] minEdgeReversals(int n, int[][] edges) {
+        // Map<node, Map<neighbor, cost>>
+        // cost 0 = going with edge direction (no reversal needed)
+        // cost 1 = going against edge direction (reversal needed)
+        Map<Integer, Map<Integer, Integer>> graph = new HashMap<>();
+        
+        for (int i = 0; i < n; i++) {
+            graph.put(i, new HashMap<>());
+        }
+        
+        for (int[] edge : edges) {
+            int u = edge[0], v = edge[1];
+            // traversing u->v is free, already points this way
+            graph.get(u).put(v, 0);
+            // traversing v->u costs 1, need to reverse
+            graph.get(v).put(u, 1);
+        }
+        
+        int[] answer = new int[n];
+        
+        // Pass 1: compute answer[0] by rooting tree at node 0
+        answer[0] = dfs(0, -1, graph);
+        
+        // Pass 2: re-rooting DFS to propagate answer to all other nodes
+        reroot(0, -1, graph, answer);
+        
+        return answer;
+    }
+    
+    // Same DFS as brute force but just for node 0
+    private int dfs(int node, int parent, Map<Integer, Map<Integer, Integer>> graph) {
+        int totalCost = 0;
+        
+        for (Map.Entry<Integer, Integer> entry : graph.get(node).entrySet()) {
+            int neighbor = entry.getKey();
+            int cost = entry.getValue();
+            
+            if (neighbor == parent) continue;
+            
+            totalCost += cost + dfs(neighbor, node, graph);
+        }
+        
+        return totalCost;
+    }
+    
+    // Re-rooting DFS: derive answer for each node from its parent's answer
+    private void reroot(int node, int parent, Map<Integer, Map<Integer, Integer>> graph, int[] answer) {
+        for (Map.Entry<Integer, Integer> entry : graph.get(node).entrySet()) {
+            int neighbor = entry.getKey();
+            int cost = entry.getValue();
+            
+            if (neighbor == parent) continue;
+            
+            // cost is from node's perspective going toward neighbor
+            // if cost == 0, edge goes node->neighbor
+            //   when we re-root at neighbor, this edge now needs a reversal
+            //   so neighbor pays +1 more than node
+            // if cost == 1, edge goes neighbor->node
+            //   when we re-root at neighbor, this edge is now free
+            //   so neighbor pays -1 less than node
+            if (cost == 0) {
+                answer[neighbor] = answer[node] + 1;
+            } else {
+                answer[neighbor] = answer[node] - 1;
+            }
+            
+            reroot(neighbor, node, graph, answer);
         }
     }
 }
