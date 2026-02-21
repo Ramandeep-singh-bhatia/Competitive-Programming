@@ -97,7 +97,7 @@
     }
 }*/
 
-class Solution {
+/*class Solution {
     public int minDifficulty(int[] jobDifficulty, int d) {
         int n = jobDifficulty.length;
 
@@ -137,5 +137,53 @@ class Solution {
         }
 
         return dp[n][d] == Integer.MAX_VALUE ? -1 : dp[n][d];
+    }
+}*/
+
+class Solution {
+    public int minDifficulty(int[] jobDifficulty, int d) {
+        int n = jobDifficulty.length;
+
+        if (n < d) return -1;
+
+        // prev[i] = min difficulty to schedule first i jobs in exactly j-1 days
+        int[] prev = new int[n + 1];
+        // curr[i] = min difficulty to schedule first i jobs in exactly j days
+        int[] curr = new int[n + 1];
+
+        // Initialize both arrays to large value to represent impossible states
+        Arrays.fill(prev, Integer.MAX_VALUE);
+        Arrays.fill(curr, Integer.MAX_VALUE);
+
+        // Base case: 0 jobs in 0 days costs nothing
+        prev[0] = 0;
+
+        for (int j = 1; j <= d; j++) {
+            // Reset curr for this day's computation
+            Arrays.fill(curr, Integer.MAX_VALUE);
+
+            // Need at least j jobs to have j days with one job each
+            for (int i = j; i <= n; i++) {
+                int todayMax = 0;
+                // Try all split points k - day j handles jobs[k..i-1]
+                for (int k = i - 1; k >= j - 1; k--) {
+                    // Extend today's window leftward, update running max
+                    todayMax = Math.max(todayMax, jobDifficulty[k]);
+
+                    // Only combine if previous state is reachable
+                    if (prev[k] != Integer.MAX_VALUE) {
+                        curr[i] = Math.min(curr[i], prev[k] + todayMax);
+                    }
+                }
+            }
+
+            // curr becomes prev for next iteration
+            int[] temp = prev;
+            prev = curr;
+            curr = temp;
+        }
+
+        // After d iterations, answer is in prev[n]
+        return prev[n] == Integer.MAX_VALUE ? -1 : prev[n];
     }
 }
