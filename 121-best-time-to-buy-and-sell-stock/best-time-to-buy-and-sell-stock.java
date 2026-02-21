@@ -19,7 +19,7 @@
 }*/
 
 // Kadane's algorithm
-class Solution {
+/*class Solution {
     public int maxProfit(int[] prices) {
         int max = 0;
         int sum = 0;
@@ -34,5 +34,27 @@ class Solution {
         }
         
         return max;
+    }
+}*/
+
+class Solution {
+    public int maxProfit(int[] prices) {
+        int minPrice = prices[0]; // lowest buy price seen so far; initialize to first day since we haven't seen anything else yet
+        int maxProfit = 0; // best profit seen so far; starts at 0 because we return 0 if no profitable trade exists
+        
+        // walk through every possible sell day
+        for (int i = 1; i < prices.length; i++) {
+            // if today's price is lower than anything we've seen, update our best buy opportunity
+            if (prices[i] < minPrice) {
+                minPrice = prices[i];
+            }
+            
+            int profitIfSellToday = prices[i] - minPrice; // best profit we could get selling today, given the cheapest buy so far
+            if (profitIfSellToday > maxProfit) {
+                maxProfit = profitIfSellToday; // update best if selling today beats our current record
+            }
+        }
+        
+        return maxProfit;
     }
 }
