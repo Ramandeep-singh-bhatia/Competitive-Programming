@@ -42,7 +42,7 @@
     }
 }*/
 
-class Solution {
+/*class Solution {
     // memo[start][daysLeft] = min difficulty to schedule jobs[start..n-1] in daysLeft days
     // -1 means not yet computed
     private int[][] memo;
@@ -94,5 +94,48 @@ class Solution {
         // Cache before returning
         memo[start][daysLeft] = minCost;
         return minCost;
+    }
+}*/
+
+class Solution {
+    public int minDifficulty(int[] jobDifficulty, int d) {
+        int n = jobDifficulty.length;
+
+        if (n < d) return -1;
+
+        // dp[i][j] = min difficulty to schedule first i jobs in exactly j days
+        // using n+1 size for i so dp[i] naturally means "first i jobs"
+        int[][] dp = new int[n + 1][d + 1];
+
+        // Fill with large value to indicate uncomputed/impossible states
+        for (int[] row : dp) {
+            Arrays.fill(row, Integer.MAX_VALUE);
+        }
+
+        // Base case: 0 jobs in 0 days costs nothing
+        dp[0][0] = 0;
+
+        // Fill for each number of days j from 1 to d
+        for (int j = 1; j <= d; j++) {
+            // i = number of jobs scheduled so far, need at least j jobs for j days
+            for (int i = j; i <= n; i++) {
+                // Try all possible starting points k for day j
+                // day j handles jobs[k..i-1]
+                // k must be at least j-1 so first j-1 days have at least one job each
+                int todayMax = 0;
+                for (int k = i - 1; k >= j - 1; k--) {
+                    // Extend today's slice leftward, update running max
+                    // going right to left so we build max incrementally
+                    todayMax = Math.max(todayMax, jobDifficulty[k]);
+
+                    // Only combine if previous days state is reachable
+                    if (dp[k][j - 1] != Integer.MAX_VALUE) {
+                        dp[i][j] = Math.min(dp[i][j], dp[k][j - 1] + todayMax);
+                    }
+                }
+            }
+        }
+
+        return dp[n][d] == Integer.MAX_VALUE ? -1 : dp[n][d];
     }
 }
