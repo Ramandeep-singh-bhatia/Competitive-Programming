@@ -1,4 +1,4 @@
-class Solution {
+/*class Solution {
     public int uniquePathsWithObstacles(int[][] grid) {
         int m = grid.length;
         int n = grid[0].length;
@@ -33,5 +33,41 @@ class Solution {
                        + solve(grid, row, col + 1, m, n, memo);
         
         return memo[row][col];
+    }
+}*/
+
+class Solution {
+    public int uniquePathsWithObstacles(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+
+        // if start or end is blocked, no paths exist
+        if (grid[0][0] == 1 || grid[m-1][n-1] == 1) return 0;
+
+        // dp[i][j] = number of unique paths to reach grid[i-1][j-1]
+        // extra row and column of zeros act as implicit base cases -
+        // any "above" the first row or "left" of the first column is naturally 0
+        int[][] dp = new int[m+1][n+1];
+
+        // starting cell - one way to be here before we've moved anywhere
+        dp[1][1] = 1;
+
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                // skip start cell since we already initialized it
+                if (i == 1 && j == 1) continue;
+
+                // obstacle in the corresponding grid cell means 0 paths through here
+                if (grid[i-1][j-1] == 1) {
+                    dp[i][j] = 0;
+                } else {
+                    // paths from above + paths from the left
+                    dp[i][j] = dp[i-1][j] + dp[i][j-1];
+                }
+            }
+        }
+
+        // answer corresponds to bottom-right corner of the grid
+        return dp[m][n];
     }
 }
