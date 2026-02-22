@@ -36,7 +36,7 @@
     }
 }*/
 
-class Solution {
+/*class Solution {
     public int uniquePathsWithObstacles(int[][] grid) {
         int m = grid.length;
         int n = grid[0].length;
@@ -69,5 +69,41 @@ class Solution {
 
         // answer corresponds to bottom-right corner of the grid
         return dp[m][n];
+    }
+}*/
+
+class Solution {
+    public int uniquePathsWithObstacles(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+
+        // if start or end is blocked, no paths exist
+        if (grid[0][0] == 1 || grid[m-1][n-1] == 1) return 0;
+
+        // single row dp array - dp[j] will hold the number of paths to reach
+        // the current row's cell at column j
+        int[] dp = new int[n];
+
+        // starting cell has one path to reach it
+        dp[0] = 1;
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                // obstacle - no paths through this cell regardless of what came before
+                if (grid[i][j] == 1) {
+                    dp[j] = 0;
+                } else if (j > 0) {
+                    // dp[j] currently holds value from previous row (paths from above)
+                    // dp[j-1] was just updated this iteration (paths from left)
+                    // so dp[j] += dp[j-1] naturally combines both contributions
+                    dp[j] += dp[j-1];
+                }
+                // if j == 0 and no obstacle, dp[j] already holds the correct value
+                // from the previous row - no update needed since there's no left neighbor
+            }
+        }
+
+        // dp[n-1] now holds the answer for the bottom-right corner
+        return dp[n-1];
     }
 }
