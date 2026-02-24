@@ -21,7 +21,7 @@
     }
 }*/
 
-class Solution {
+/*class Solution {
     public List<List<Integer>> subsets(int[] nums) {
         List<List<Integer>> result = new ArrayList<>();
         // start recursion at index 0 with an empty current subset
@@ -44,5 +44,32 @@ class Solution {
         // CHOICE 2: exclude nums[index] - undo the add and recurse without it
         current.remove(current.size() - 1); // backtrack by removing the element we just added
         backtrack(nums, index + 1, current, result);
+    }
+}*/
+
+class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        int n = nums.length;
+        List<List<Integer>> result = new ArrayList<>();
+
+        // there are 2^n possible subsets, each represented by a unique bitmask
+        // from 0 (empty set) to 2^n - 1 (full set)
+        int totalSubsets = 1 << n; // bit shift is cleaner than Math.pow(2, n)
+
+        for (int mask = 0; mask < totalSubsets; mask++) {
+            List<Integer> subset = new ArrayList<>();
+
+            // check each bit position j to see if element j is included in this subset
+            for (int j = 0; j < n; j++) {
+                // if bit j is set in mask, include nums[j] in this subset
+                if (((mask >> j) & 1) == 1) {
+                    subset.add(nums[j]);
+                }
+            }
+
+            result.add(subset);
+        }
+
+        return result;
     }
 }
